@@ -9,7 +9,10 @@ public:
 	~PacMan();
 
 	void Update(float deltaTime);
-	void OnCollision(GameObject* OtherObject);
+	void OnCollision(GameObject* OtherObject);  //Up
+	void OnCollision2(GameObject* OtherObject); //Down
+	void OnCollision3(GameObject* OtherObject); //Right
+	void OnCollision4(GameObject* OtherObject); //Left
 	void Hit();
 	std::string GetName();
 
@@ -27,6 +30,7 @@ public:
 	Vector2 _Position;
 	Vector2 ForwardBuf;
 
+	bool _Dir[4];
 
 	aie::Texture*	_PacmanClosedTexture;
 	aie::Texture*	_PacmanOpenTexture;

@@ -20,6 +20,9 @@ public:
 	virtual void Draw(aie::Renderer2D* renderer);
 
 	virtual void OnCollision(GameObject* OtherObject);
+	virtual void OnCollision2(GameObject* OtherObject);
+	virtual void OnCollision3(GameObject* OtherObject);
+	virtual void OnCollision4(GameObject* OtherObject);
 
 	void SetPosition(Vector2 v2Pos);
 	Vector2 GetPosition();
@@ -28,9 +31,6 @@ public:
 	float GetRotation();
 	float GetLocalRotation();
 	bool collided;
-
-	void SetCollided(bool hit);
-	bool GetCollided();
 
 	void SetScale(Vector2 v2Scale);
 	Vector2 GetScale();
@@ -41,9 +41,6 @@ public:
 	Vector2 _V2ColliderMin;
 	Vector2 _V2ColliderMax;
 
-	Collider* GetCollider() { return _Collider; }
-	Collider* GetCollider2() { return _Collider2; }
-	bool HasCollider2();
 	void SetLocalRotation(float newRotation);
 
 	float GetScore();
@@ -53,6 +50,18 @@ public:
 	void SetName(std::string name);
 	std::string _Name;
 	float _Score;
+
+
+
+	Collider* GetCollider() { return _Collider; }
+	Collider* GetCollider2() { return _Collider2; }
+	Collider* GetCollider3() { return _Collider3; }
+	Collider* GetCollider4() { return _Collider4; }
+	void SetCollided(bool hit);
+	bool GetCollided();
+	bool HasCollider2();
+	bool HasCollider3();
+	bool HasCollider4();
 protected:
 
 	GameObject* _Parent;
@@ -64,22 +73,9 @@ protected:
 
 	Collider* _Collider;
 	Collider* _Collider2 = nullptr;
+	Collider* _Collider3 = nullptr;
+	Collider* _Collider4 = nullptr;
 private:
 	void AddChild(GameObject* Child);
 	void RemoveChild(GameObject* Child);
 };
-
-/*
-World
-	Global = Identity
-	Local = Global
-
-Tank
-	Local = pos, rot, scale
-	Global = World.Global * Local
-
-Turrent
-	Local = pos, rot, scale
-	Global = Tank.Global * Local
-
-*/

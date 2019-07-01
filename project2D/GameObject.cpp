@@ -56,6 +56,12 @@ void GameObject::UpDateGlobalTransform()
 	if (_Collider2)
 		_Collider2->SetPostition(_GlobalTransform.GetTranslation());
 
+	if (_Collider3)
+		_Collider3->SetPostition(_GlobalTransform.GetTranslation());
+
+	if (_Collider4)
+		_Collider4->SetPostition(_GlobalTransform.GetTranslation());
+
 	for (GameObject* _Child : _ChildList)
 	{
 		_Child->UpDateGlobalTransform();
@@ -151,6 +157,21 @@ void GameObject::OnCollision(GameObject* OtherObject)
 	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
 }
 
+void GameObject::OnCollision2(GameObject* OtherObject)
+{
+	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
+}
+
+void GameObject::OnCollision3(GameObject* OtherObject)
+{
+	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
+}
+
+void GameObject::OnCollision4(GameObject* OtherObject)
+{
+	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
+}
+
 void GameObject::SetName(std::string name)
 {
 	_Name = name;
@@ -174,6 +195,22 @@ void GameObject::SetCollided(bool hit)
 bool GameObject::HasCollider2()
 {
 	if (GetCollider2())
+		return true;
+	else
+		return false;
+}
+
+bool GameObject::HasCollider3()
+{
+	if (GetCollider3())
+		return true;
+	else
+		return false;
+}
+
+bool GameObject::HasCollider4()
+{
+	if (GetCollider3())
 		return true;
 	else
 		return false;

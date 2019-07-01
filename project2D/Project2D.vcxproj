@@ -175,6 +175,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Ghost.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="main.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Ghost.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Map.h" />

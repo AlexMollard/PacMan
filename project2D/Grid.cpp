@@ -6,15 +6,15 @@
 #include <algorithm>
 #include <random>
 
-#define SQUARE_SIZE 40
+#define SQUARE_SIZE 100
 #define GRID_POSX 10
 #define GRID_POSY 10
 
-Grid::Grid(int Width, int Height, int screenWidth, int screenHeight)
+Grid::Grid(int Width, int Height)
 {
 	_Width = Width; 
 	_Height = Height; 
-
+	_ToggleLines = false;
 	_NodeList = new Node**[_Width];
 
 	for (int i = 0; i < _Width; i++)
@@ -27,11 +27,12 @@ Grid::Grid(int Width, int Height, int screenWidth, int screenHeight)
 		for (int  y = 0; y < _Height; y++)
 		{
 			Vector2 pos;
-			pos.x = x * SQUARE_SIZE + GRID_POSX;
-			pos.y = y * SQUARE_SIZE + GRID_POSY;
+			pos.x = 100 + SQUARE_SIZE * x;
+			pos.y = 100 + SQUARE_SIZE * y;
 			_NodeList[x][y] = new Node(pos, x, y); 
 		}
 	}
+
 
 	for (int x = 0; x < _Width; ++x)
 	{
@@ -77,6 +78,22 @@ Grid::Grid(int Width, int Height, int screenWidth, int screenHeight)
 
 	//Create Closed list
 	_ClosedList = new bool[_Width * _Height];
+
+
+	for (int x = 0; x < _Width; x++)
+	{
+		for (int y = 0; y < _Height; y++)
+		{
+			if (map[y][x] == 1)
+			{
+				_NodeList[x][y]->_Blocked = true;
+			}
+			else
+			{
+				_NodeList[x][y]->_Blocked = false;
+			}
+		}
+	}
 }
 
 
@@ -129,10 +146,13 @@ void Grid::Draw(aie::Renderer2D* pRenderer)
 			}
 		}
 	}
+	pRenderer->setRenderColour(1.0f, 1.0f, 1.0f);
 }
 
-void Grid::update(float deltaTime, aie::Input* input)
+void Grid::update(float deltaTime)
 {
+	aie::Input* input = aie::Input::getInstance();
+
 	//Toggle neighbour lines
 	if (input->wasKeyPressed(aie::INPUT_KEY_G))
 	{
@@ -150,6 +170,17 @@ void Grid::update(float deltaTime, aie::Input* input)
 			for (int y = 0; y < _Height; y++)
 			{
 				_NodeList[x][y]->_Blocked = false;
+			}
+		}
+
+		for (int x = 0; x < _Width; x++)
+		{
+			for (int y = 0; y < _Height; y++)
+			{
+				if (map[y][x] == 1)
+				{
+					_NodeList[x][y]->_Blocked = true;
+				}
 			}
 		}
 	}
@@ -174,8 +205,8 @@ void Grid::update(float deltaTime, aie::Input* input)
 
 Node* Grid::GetNodeByPos(Vector2 Pos)
 {
-	int x = (Pos.x - GRID_POSX + (SQUARE_SIZE * 0.5)) / SQUARE_SIZE;
-	int y = (Pos.y - GRID_POSY + (SQUARE_SIZE * 0.5)) / SQUARE_SIZE;
+	int x = (Pos.x - GRID_POSX - (SQUARE_SIZE * 0.5)) / SQUARE_SIZE;
+	int y = (Pos.y - GRID_POSY - (SQUARE_SIZE * 0.5)) / SQUARE_SIZE;
 
 	if (x < 0 || y < 0 || x >= _Width || y >= _Height)
 		return nullptr;

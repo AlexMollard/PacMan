@@ -1,27 +1,49 @@
 #include "Level.h"
 
+#define NodeSize 100
+
 Level::Level()
 {
 	SetName("Level");
 	_collisionManager = new CollisionManager();
+	_Grid = new Grid(15, 15);
 
-	 _PacMan = new PacMan();
-	 _PacMan->SetParent(this);
-	 _PacMan->SetPosition(Vector2(500,500));
-	 _PacMan->UpDateGlobalTransform();
-	 _collisionManager->AddObject(_PacMan);
 
 	 for (int x = 0; x < 15; x++)
 	 {
 		 for (int y = 0; y < 15; y++)
 		 {
-			 if (map[y][x] == 1)
+			 if (map[y][x] == 5)
+			 {
+				 _PacMan = new PacMan();
+				 _PacMan->SetParent(this);
+				 _PacMan->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _PacMan->UpDateGlobalTransform();
+				 _collisionManager->AddObject(_PacMan);
+			 }
+			 else if (map[y][x] == 1)
 			 {
 				 _Wall.push_back(new Wall("./textures/Wall.png"));
 				 _Wall.back()->SetParent(this);
-				 _Wall.back()->SetPosition(Vector2(100 + 40 * x, 100 + 40 * y));
+				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
 				 _collisionManager->AddObject(_Wall.back());
+			 }
+			 else if (map[y][x] == 2)
+			 {
+				 _Wall.push_back(new Wall("./textures/Open.png"));
+				 _Wall.back()->SetParent(this);
+				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _Wall.back()->UpDateGlobalTransform();
+				 _collisionManager->AddObject(_Wall.back());
+			 }
+			 else if (map[y][x] == 3)
+			 {
+				 _Ghost.push_back(new Ghost("./textures/GhostPurple.png"));
+				 _Ghost.back()->SetParent(this);
+				 _Ghost.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _Ghost.back()->UpDateGlobalTransform();
+				 _collisionManager->AddObject(_Ghost.back());
 			 }
 		 }
 	 }
@@ -44,10 +66,49 @@ void Level::Update(float deltaTime)
 {
 	GameObject::Update(deltaTime);
 	_collisionManager->Update(deltaTime);
+	_Grid->update(deltaTime);
+
+	aie::Input* input = aie::Input::getInstance();
+
+
+	Vector2 MousePos;
+	MousePos.x = input->getMouseX();
+	MousePos.y = input->getMouseY();
+
+	if (input->wasKeyPressed(aie::INPUT_KEY_Z))
+	{
+		_StartPos = MousePos;
+	}
+
+	_Ghost.front()->SetPosition(_Path.back());
+	_StartPos = _Ghost.front()->GetPosition();
+
+
+	_EndPos = _PacMan->GetPosition();
+
+	_Grid->FindPath(_StartPos, _EndPos, _Path);
+
 }
 
 void Level::Draw(aie::Renderer2D* renderer)
 {
+	_Grid->Draw(renderer);
 	GameObject::Draw(renderer);
 	_collisionManager->Draw(renderer);
+
+
+	//Draw Path
+	renderer->setRenderColour(1.0f, 1.0f, 0.0f);
+	for (int i = 1; i < _Path.size(); i++)
+	{
+		renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
+	}
+
+	//Start point
+	renderer->setRenderColour(0.2f, 0.7f, 0.0f);
+	renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
+
+	//End point
+	renderer->setRenderColour(0.7f, 0.0f, 0.2f);
+	renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
 }

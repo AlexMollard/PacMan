@@ -1,5 +1,10 @@
-﻿c:\users\s191067\desktop\ai\project2d\grid.h(8): warning C4099: 'Node': type name first seen using 'struct' now seen using 'class'
-c:\users\s191067\desktop\ai\project2d\grid.cpp(30): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\ai\project2d\grid.cpp(31): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\ai\project2d\grid.cpp(177): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\s191067\desktop\ai\project2d\grid.cpp(178): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+﻿  Level.cpp
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\grid.h(9): warning C4099: 'Node': type name first seen using 'struct' now seen using 'class'
+  c:\users\alexm\desktop\programming\pacman\trunk\project2d\pathheap.h(5): note: see declaration of 'Node'
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(20): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(36): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(44): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(75): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Project2D.vcxproj -> C:\Users\alexm\Desktop\Programming\PacMan\trunk\temp\Project2D\x64\Debug\Project2D.exe

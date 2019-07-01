@@ -4,17 +4,18 @@
 #include "Input.h"
 #include "PathHeap.h"
 #include <vector>
+#include "Map.h"
 
 class Node;
 
 class Grid
 {
 public:
-	Grid(int Width, int Height, int screenWidth, int screenHeight);
+	Grid(int Width, int Height);
 	~Grid();
 
 	void Draw(aie::Renderer2D* Renderer);
-	void update(float deltaTime, aie::Input* input);
+	void update(float deltaTime);
 
 	Node* GetNodeByPos(Vector2 Pos);
 	bool FindPath(Vector2 Start, Vector2 End, std::vector<Vector2>& path);

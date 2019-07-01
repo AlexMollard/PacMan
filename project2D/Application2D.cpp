@@ -15,8 +15,6 @@ Application2D::~Application2D() {
 
 bool Application2D::startup() {
 
-	_Grid = new Grid(20 ,20 ,getWindowWidth() ,getWindowHeight());
-
 	_2dRenderer = new aie::Renderer2D();
 
 	_Font = new aie::Font("./font/consolas.ttf", 32);
@@ -45,38 +43,21 @@ void Application2D::update(float deltaTime) {
 	// input example
 	aie::Input* input = aie::Input::getInstance();
 
-	_Grid->update(deltaTime, input);
+	//Vector2 MousePos;
+	//MousePos.x = input->getMouseX();
+	//MousePos.y = input->getMouseY();
 
-	Vector2 MousePos;
-	MousePos.x = input->getMouseX();
-	MousePos.y = input->getMouseY();
+	//if (input->wasKeyPressed(aie::INPUT_KEY_Z))
+	//{
+	//	_StartPos = MousePos;
+	//}
 
-	if (input->isMouseButtonDown(0))
-	{
-		Node* MouseNode = _Grid->GetNodeByPos(MousePos);
-		if (MouseNode)
-			MouseNode->_Blocked = true;
-	}
-
-	if (input->isMouseButtonDown(1))
-	{
-		Node* MouseNode = _Grid->GetNodeByPos(MousePos);
-		if (MouseNode)
-			MouseNode->_Blocked = false;
-	}
-
-	if (input->wasKeyPressed(aie::INPUT_KEY_I))
-	{
-		_StartPos = MousePos;
-	}
-
-	if (input->wasKeyPressed(aie::INPUT_KEY_O))
-	{
-		_EndPos = MousePos; 
-	}
-
+	//if (input->wasKeyPressed(aie::INPUT_KEY_X))
+	//{
+	//	_EndPos = MousePos; 
+	//}
 	
-	_Grid->FindPath(_StartPos, _EndPos, _Path);
+	//_Grid->FindPath(_StartPos, _EndPos, _Path);
 	
 
 	// exit the application
@@ -91,24 +72,7 @@ void Application2D::draw() {
 
 	// begin drawing sprites
 	_2dRenderer->begin();
-
-	//_Grid->Draw(_2dRenderer);
-	//
-	////Draw Path
-	//_2dRenderer->setRenderColour(1.0f, 1.0f, 0.0f);
-	//for (int i = 1; i < _Path.size(); i++)
-	//{
-	//	_2dRenderer->drawLine(_Path[i-1].x, _Path[i-1].y, _Path[i].x, _Path[i].y, 3);
-	//}
-	//
-	////Start point
-	//_2dRenderer->setRenderColour(0.2f, 0.7f, 0.0f);
-	//_2dRenderer->drawCircle(_StartPos.x, _StartPos.y, 10);
-	//
-	////End point
-	//_2dRenderer->setRenderColour(0.7f, 0.0f, 0.2f);
-	//_2dRenderer->drawCircle(_EndPos.x, _EndPos.y, 10);
-	//
+	
 	//Draw level
 	_2dRenderer->setRenderColour(1, 1, 1);
 	_Level->Draw(_2dRenderer);
