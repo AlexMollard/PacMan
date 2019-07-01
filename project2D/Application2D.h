@@ -1,6 +1,7 @@
 #pragma once
 #include "Grid.h"
 #include "Application.h"
+#include "Level.h"
 #include "Renderer2D.h"
 
 class Application2D : public aie::Application {
@@ -22,6 +23,7 @@ protected:
 	Grid*				_Grid;
 	Vector2 _StartPos;
 	Vector2 _EndPos;
+	Level*				_Level;
 	std::vector<Vector2> _Path;
 
 

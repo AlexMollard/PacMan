@@ -16,6 +16,10 @@ void CollisionManager::Update(float deltaTime)
 	for (int i = 0; i < _ObjectList.size(); i++)
 	{
 		GameObject* _Object = _ObjectList[i];
+
+		if (_Object->GetName() == "Wall")
+			continue;
+
 		Collider* _FirstCollider = _Object->GetCollider();
 
 		for (int j = 0; j < _ObjectList.size(); j++)
@@ -38,11 +42,9 @@ void CollisionManager::Update(float deltaTime)
 			if (_Max.x > _OtherMin.x &&_Max.y > _OtherMin.y &&
 				_Min.x < _OtherMax.x &&_Min.y < _OtherMax.y)
 			{
-				if (_Object->GetName() == "Space_Ship" && _OtherObject->GetName() != "Bullet" )
-					_Object->OnCollision(_OtherObject);
+				//if (_Object->GetName() == "Space_Ship" && _OtherObject->GetName() != "Bullet" )
+				//	_Object->OnCollision(_OtherObject);
 
-				if (_Object->GetName() == "Bullet" && _OtherObject->GetName() != "Space_Ship" && _OtherObject->GetName() != "Bullet")
-					_Object->OnCollision(_OtherObject);
 			}
 		}
 	}
@@ -52,6 +54,9 @@ void CollisionManager::Draw(aie::Renderer2D* renderer)
 {
 	for (int i = 0; i < _ObjectList.size(); i++)
 	{
+		if (_ObjectList[i]->GetName() == "Wall")
+			continue;
+
 		Collider* _collider = _ObjectList[i]->GetCollider();
 		Vector2 v2Min = _collider->GetMin();
 		Vector2 v2Max = _collider->GetMax();
