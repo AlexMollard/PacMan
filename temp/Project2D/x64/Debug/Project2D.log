@@ -1,10 +1,15 @@
-﻿  Level.cpp
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\grid.h(9): warning C4099: 'Node': type name first seen using 'struct' now seen using 'class'
-  c:\users\alexm\desktop\programming\pacman\trunk\project2d\pathheap.h(5): note: see declaration of 'Node'
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(20): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(28): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(36): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(44): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(75): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\level.cpp(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Project2D.vcxproj -> C:\Users\alexm\Desktop\Programming\PacMan\trunk\temp\Project2D\x64\Debug\Project2D.exe
+﻿c:\users\s191067\desktop\pacman\project2d\pacman.cpp(73): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(77): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(78): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(82): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(86): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(87): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(95): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(96): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(100): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(103): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(104): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(131): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(132): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(133): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(134): warning C4244: '=': conversion from 'int' to 'float', possible loss of data

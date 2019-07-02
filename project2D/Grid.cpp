@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <random>
 
-#define SQUARE_SIZE 100
+#define SQUARE_SIZE 50
 #define GRID_POSX 10
 #define GRID_POSY 10
 
@@ -163,44 +163,44 @@ void Grid::update(float deltaTime)
 	}
 
 	// Clear Nodes
-	if (input->wasKeyPressed(aie::INPUT_KEY_C))
-	{
-		for (int x = 0; x < _Width; x++)
-		{
-			for (int y = 0; y < _Height; y++)
-			{
-				_NodeList[x][y]->_Blocked = false;
-			}
-		}
+	//if (input->wasKeyPressed(aie::INPUT_KEY_C))
+	//{
+	//	for (int x = 0; x < _Width; x++)
+	//	{
+	//		for (int y = 0; y < _Height; y++)
+	//		{
+	//			_NodeList[x][y]->_Blocked = false;
+	//		}
+	//	}
+	//
+	//	for (int x = 0; x < _Width; x++)
+	//	{
+	//		for (int y = 0; y < _Height; y++)
+	//		{
+	//			if (map[y][x] == 1)
+	//			{
+	//				_NodeList[x][y]->_Blocked = true;
+	//			}
+	//		}
+	//	}
+	//}
 
-		for (int x = 0; x < _Width; x++)
-		{
-			for (int y = 0; y < _Height; y++)
-			{
-				if (map[y][x] == 1)
-				{
-					_NodeList[x][y]->_Blocked = true;
-				}
-			}
-		}
-	}
-
-	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-	{
-		int test = 0;
-		for (int x = 0; x < _Width; x++)
-		{
-			for (int y = 0; y < _Height; y++)
-			{
-				test = rand() % 10;
-	
-				if (test < 4)
-					_NodeList[x][y]->_Blocked = true;
-				else
-					_NodeList[x][y]->_Blocked = false;
-			}
-		}
-	}
+	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
+	//{
+	//	int test = 0;
+	//	for (int x = 0; x < _Width; x++)
+	//	{
+	//		for (int y = 0; y < _Height; y++)
+	//		{
+	//			test = rand() % 10;
+	//
+	//			if (test < 4)
+	//				_NodeList[x][y]->_Blocked = true;
+	//			else
+	//				_NodeList[x][y]->_Blocked = false;
+	//		}
+	//	}
+	//}
 }
 
 Node* Grid::GetNodeByPos(Vector2 Pos)

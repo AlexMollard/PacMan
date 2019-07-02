@@ -6,12 +6,13 @@
 #include "Collider.h"
 #include <string.h>
 #include <vector>
+#include "Grid.h"
 
 class GameObject
 {
 public:
 	GameObject();
-	GameObject(const char* TextureName);
+	GameObject(const char* TextureName, Grid* _Grid);
 	virtual ~GameObject();
 
 	void UpDateGlobalTransform();
@@ -20,9 +21,6 @@ public:
 	virtual void Draw(aie::Renderer2D* renderer);
 
 	virtual void OnCollision(GameObject* OtherObject);
-	virtual void OnCollision2(GameObject* OtherObject);
-	virtual void OnCollision3(GameObject* OtherObject);
-	virtual void OnCollision4(GameObject* OtherObject);
 
 	void SetPosition(Vector2 v2Pos);
 	Vector2 GetPosition();
@@ -54,14 +52,9 @@ public:
 
 
 	Collider* GetCollider() { return _Collider; }
-	Collider* GetCollider2() { return _Collider2; }
-	Collider* GetCollider3() { return _Collider3; }
-	Collider* GetCollider4() { return _Collider4; }
 	void SetCollided(bool hit);
 	bool GetCollided();
-	bool HasCollider2();
-	bool HasCollider3();
-	bool HasCollider4();
+
 protected:
 
 	GameObject* _Parent;
@@ -72,9 +65,6 @@ protected:
 	aie::Texture* _Texture;
 
 	Collider* _Collider;
-	Collider* _Collider2 = nullptr;
-	Collider* _Collider3 = nullptr;
-	Collider* _Collider4 = nullptr;
 private:
 	void AddChild(GameObject* Child);
 	void RemoveChild(GameObject* Child);

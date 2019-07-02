@@ -10,7 +10,7 @@ GameObject::GameObject()
 	_Score = 0;
 }
 
-GameObject::GameObject(const char* TextureName)
+GameObject::GameObject(const char* TextureName, Grid* _Grid)
 {
 	_Texture = new aie::Texture(TextureName);
 	_Parent = nullptr;
@@ -52,15 +52,6 @@ void GameObject::UpDateGlobalTransform()
 		_Collider->SetPostition(_GlobalTransform.GetTranslation());
 		//_Collider->SetRotation(_GlobalTransform.getRotation());
 	}
-
-	if (_Collider2)
-		_Collider2->SetPostition(_GlobalTransform.GetTranslation());
-
-	if (_Collider3)
-		_Collider3->SetPostition(_GlobalTransform.GetTranslation());
-
-	if (_Collider4)
-		_Collider4->SetPostition(_GlobalTransform.GetTranslation());
 
 	for (GameObject* _Child : _ChildList)
 	{
@@ -157,21 +148,6 @@ void GameObject::OnCollision(GameObject* OtherObject)
 	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
 }
 
-void GameObject::OnCollision2(GameObject* OtherObject)
-{
-	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
-}
-
-void GameObject::OnCollision3(GameObject* OtherObject)
-{
-	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
-}
-
-void GameObject::OnCollision4(GameObject* OtherObject)
-{
-	std::cout << _Name << "Colliding" << OtherObject->GetName() << std::endl;
-}
-
 void GameObject::SetName(std::string name)
 {
 	_Name = name;
@@ -190,30 +166,6 @@ bool GameObject::GetCollided()
 void GameObject::SetCollided(bool hit)
 {
 	collided = hit;
-}
-
-bool GameObject::HasCollider2()
-{
-	if (GetCollider2())
-		return true;
-	else
-		return false;
-}
-
-bool GameObject::HasCollider3()
-{
-	if (GetCollider3())
-		return true;
-	else
-		return false;
-}
-
-bool GameObject::HasCollider4()
-{
-	if (GetCollider3())
-		return true;
-	else
-		return false;
 }
 
 void GameObject::SetLocalRotation(float newRotation)

@@ -5,15 +5,12 @@
 class PacMan : public GameObject
 {
 public:
-	PacMan();
+	PacMan(Grid* _Grid);
 	~PacMan();
 
 	void Update(float deltaTime);
-	void OnCollision(GameObject* OtherObject);  //Up
-	void OnCollision2(GameObject* OtherObject); //Down
-	void OnCollision3(GameObject* OtherObject); //Right
-	void OnCollision4(GameObject* OtherObject); //Left
-	void Hit();
+	void OnCollision(GameObject* OtherObject);
+
 	std::string GetName();
 
 	aie::Texture* GetShipTexture();
@@ -28,10 +25,12 @@ public:
 	float _Acceleration = 0.0f;
 	Vector2 _Velocity;
 	Vector2 _Position;
+	Vector2 _PrevPosition;
 	Vector2 ForwardBuf;
-
-	bool _Dir[4];
-
+	Grid* _Grid;
 	aie::Texture*	_PacmanClosedTexture;
 	aie::Texture*	_PacmanOpenTexture;
+
+	Vector2 _StartPos;
+	Vector2 _EndPos;
 };

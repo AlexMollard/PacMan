@@ -3,9 +3,10 @@
 #include <iostream>
 using namespace std;
 
-Ghost::Ghost(const char* FileName) : GameObject(FileName)
+Ghost::Ghost(const char* FileName, Grid* _Grid) : GameObject(FileName, _Grid)
 {
-	_Collider = new Collider(Vector2(-40, -40), Vector2(40, 40));
+	_Collider = new Collider(Vector2(-40, -40) / 2, Vector2(40, 40) / 2);
+	this->_Grid = _Grid;
 	SetName("Ghost");
 }
 

@@ -1,6 +1,6 @@
 #include "Level.h"
 
-#define NodeSize 100
+#define NodeSize 50
 
 Level::Level()
 {
@@ -15,10 +15,11 @@ Level::Level()
 		 {
 			 if (map[y][x] == 5)
 			 {
-				 _PacMan = new PacMan();
+				 _PacMan = new PacMan(_Grid);
 				 _PacMan->SetParent(this);
 				 _PacMan->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _PacMan->UpDateGlobalTransform();
+				 _PacMan->SetScale(Vector2(0.5f, 0.5f));
 				 _collisionManager->AddObject(_PacMan);
 			 }
 			 else if (map[y][x] == 1)
@@ -27,6 +28,7 @@ Level::Level()
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
+				 _Wall.back()->SetScale(Vector2(0.5f,0.5f));
 				 _collisionManager->AddObject(_Wall.back());
 			 }
 			 else if (map[y][x] == 2)
@@ -35,14 +37,16 @@ Level::Level()
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
+				 _Wall.back()->SetScale(Vector2(0.5f, 0.5f));
 				 _collisionManager->AddObject(_Wall.back());
 			 }
 			 else if (map[y][x] == 3)
 			 {
-				 _Ghost.push_back(new Ghost("./textures/GhostPurple.png"));
+				 _Ghost.push_back(new Ghost("./textures/GhostPurple.png", _Grid));
 				 _Ghost.back()->SetParent(this);
 				 _Ghost.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Ghost.back()->UpDateGlobalTransform();
+				 _Ghost.back()->SetScale(Vector2(0.5f, 0.5f));
 				 _collisionManager->AddObject(_Ghost.back());
 			 }
 		 }
@@ -80,13 +84,15 @@ void Level::Update(float deltaTime)
 		_StartPos = MousePos;
 	}
 
-	_Ghost.front()->SetPosition(_Path.back());
+	//_Ghost.front()->SetPosition(_Path.back());
 	_StartPos = _Ghost.front()->GetPosition();
 
 
 	_EndPos = _PacMan->GetPosition();
 
 	_Grid->FindPath(_StartPos, _EndPos, _Path);
+
+	//_Ghost->SetPath(_Path);
 
 }
 
@@ -97,18 +103,18 @@ void Level::Draw(aie::Renderer2D* renderer)
 	_collisionManager->Draw(renderer);
 
 
-	//Draw Path
-	renderer->setRenderColour(1.0f, 1.0f, 0.0f);
-	for (int i = 1; i < _Path.size(); i++)
-	{
-		renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
-	}
-
-	//Start point
-	renderer->setRenderColour(0.2f, 0.7f, 0.0f);
-	renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
-
-	//End point
-	renderer->setRenderColour(0.7f, 0.0f, 0.2f);
-	renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
+	////Draw Path
+	//renderer->setRenderColour(1.0f, 1.0f, 0.0f);
+	//for (int i = 1; i < _Path.size(); i++)
+	//{
+	//	renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
+	//}
+	//
+	////Start point
+	//renderer->setRenderColour(0.2f, 0.7f, 0.0f);
+	//renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
+	//
+	////End point
+	//renderer->setRenderColour(0.7f, 0.0f, 0.2f);
+	//renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
 }

@@ -2,16 +2,14 @@
 #include "Input.h"
 #include "Application.h"
 #include <iostream>
+#include <math.h>
 using namespace std;
 
-PacMan::PacMan()
+PacMan::PacMan(Grid* _Grid)
 {
 	_Acceleration = 2000.0f;
-	_Collider = new Collider(Vector2(-35, -60), Vector2(35, -50)); //Down
-	_Collider2 = new Collider(Vector2(-35, 60), Vector2(35, 50)); //Up
-	_Collider3 = new Collider(Vector2(60, -35), Vector2(50, 35)); //Right
-	_Collider4 = new Collider(Vector2(-60, 35), Vector2(-50, -35)); //Left
-
+	_Collider = new Collider(Vector2(-20, -20), Vector2(20, 20));
+	this->_Grid = _Grid;
 	_PacmanClosedTexture = new aie::Texture("./textures/PacManClosed.png");
 	_PacmanOpenTexture = new aie::Texture("./textures/PacManOpen.png");
 	_Texture = _PacmanClosedTexture;
@@ -20,10 +18,6 @@ PacMan::PacMan()
 	SetName(_Name);
 	_Health = 100;
 	_Timer = 0;
-	_Dir[0] = true;
-	_Dir[1] = true;
-	_Dir[2] = true;
-	_Dir[3] = true;
 }
 
 PacMan::~PacMan()
@@ -47,30 +41,13 @@ PacMan::~PacMan()
 		delete _Collider;
 		_Collider = nullptr;
 	}
-
-	if (_Collider2)
-	{
-		delete _Collider2;
-		_Collider2 = nullptr;
-	}
-
-	if (_Collider3)
-	{
-		delete _Collider3;
-		_Collider3= nullptr;
-	}
-
-	if (_Collider4)
-	{
-		delete _Collider4;
-		_Collider4 = nullptr;
-	}
 }
 
 void PacMan::Update(float deltaTime)
 {
 	time = deltaTime;
 	_Timer += 10 * deltaTime;
+	_PrevPosition = GetPosition();
 
 	if (_Timer > 2)
 	{
@@ -86,57 +63,63 @@ void PacMan::Update(float deltaTime)
 
 	//Calculate Movement
 	Vector3 _TempPostion = _LocalTransform[1];
-	Vector2 _Forward(_TempPostion.x, _TempPostion.y);
-
+	//Vector2 _Forward(_TempPostion.x, _TempPostion.y);
+	_Position = GetPosition();
 
 	//Calculate Rotation
 	float _Rotation = GetLocalRotation();
-	if (_Input->isKeyDown(aie::INPUT_KEY_A) && _Dir[3])
+	if (_Input->wasKeyPressed(aie::INPUT_KEY_A))
 	{
 		_Rotation = 1.5708;
-		_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Dir[0] = true;
-		_Dir[2] = true;
-		_Dir[3] = true;
+		//_Velocity = _Velocity + (_Forward * _Acceleration);
+		_Velocity.x = -_Acceleration;
+		_Velocity.y = 0;
+		int a = roundf(_Position.y / 50.0f);
+		_Position.y = a * 50;
 	}
-	else if (_Input->isKeyDown(aie::INPUT_KEY_S) && _Dir[0])
-	{
-		_Rotation = 3.14159;
-		_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Dir[1] = true;
-		_Dir[2] = true;
-		_Dir[3] = true;
-	}
-	else if (_Input->isKeyDown(aie::INPUT_KEY_D) && _Dir[2])
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_D))
 	{
 		_Rotation = 4.71239;
-		_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Dir[0] = true;
-		_Dir[1] = true;
-		_Dir[3] = true;
+		//_Velocity = _Velocity + (_Forward * _Acceleration);
+		_Velocity.x = _Acceleration;
+		_Velocity.y = 0;
+		int a = roundf(_Position.y / 50.0f);
+		_Position.y = a * 50;
 	}
-	else if (_Input->isKeyDown(aie::INPUT_KEY_W) && _Dir[1])
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_W))
 	{
 		_Rotation = 0;
-		_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Dir[0] = true;
-		_Dir[2] = true;
-		_Dir[1] = true;
+		//_Velocity = _Velocity + (_Forward * _Acceleration);
+		_Velocity.x = 0;
+		_Velocity.y = _Acceleration;
+		int a = roundf(_Position.x / 50.0f);
+		_Position.x = a * 50;
 	}
-	
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_S))
+	{
+		_Rotation = 3.14159;
+		_Velocity.x = 0;
+		_Velocity.y = -_Acceleration;
+		int a = roundf(_Position.x / 50.0f);
+		_Position.x = a * 50;
+	}
 	SetRotation(_Rotation);
 		
-
+	_StartPos = GetPosition();
 
 	if (_Velocity.magnitude() > 200)
 	{
 		_Velocity.normalise();
 		_Velocity *= 200;
 	}
-	_Position = GetPosition();
+
 	_Position = _Position + (_Velocity * deltaTime);
 
 
+	//int a = roundf(_Position.x / 50.0f);
+	//_Position.x = a * 50;
+	//int b = roundf(_Position.y / 50.0f);
+	//_Position.y = b * 50;
 	SetPosition(_Position);
 
 
@@ -147,73 +130,19 @@ void PacMan::Update(float deltaTime)
 
 void PacMan::OnCollision(GameObject* OtherObject)
 {
-	cout << "Down" << endl;
 	_Velocity = Vector2(0, 0);
 	
-	_Dir[0] = false;
+	int a = roundf(_PrevPosition.x / 50.0f);
+	_PrevPosition.x = a * 50;
+	int b = roundf(_PrevPosition.y / 50.0f);
+	_PrevPosition.y = b * 50;
+	SetPosition(_PrevPosition);
 
-	_Position = GetPosition();
-	_Position = _Position + Vector2(0, 2);
-
-
-	SetPosition(_Position);
-
-}
-
-void PacMan::OnCollision2(GameObject* OtherObject)
-{
-	cout << "Up" << endl;
-	_Velocity = Vector2(0, 0);
-
-	_Dir[1] = false;
-
-	_Position = GetPosition();
-	_Position = _Position + Vector2(0, -2);
-
-
-	SetPosition(_Position);
-}
-
-void PacMan::OnCollision3(GameObject* OtherObject)
-{
-	cout << "RIGHT" << endl;
-	_Velocity = Vector2(0, 0);
-	
-	_Dir[2] = false;
-
-	_Position = GetPosition();
-	_Position = _Position + Vector2(-2, 0);
-
-
-	SetPosition(_Position);
-}
-
-void PacMan::OnCollision4(GameObject* OtherObject)
-{
-	cout << "LEFT" << endl;
-	_Velocity = Vector2(0, 0);
-
-	_Dir[3] = false;
-
-	_Position = GetPosition();
-	_Position = _Position + Vector2(2, 0);
-
-
-	SetPosition(_Position);
 }
 
 std::string PacMan::GetName()
 {
 	return _Name;
-}
-
-void PacMan::Hit()
-{
-	_Position = GetPosition();
-	_Velocity = Vector2(0, 0);
-	_Position = _Position + (_Velocity * time);
-	_Health -= 10;
-	SetPosition(_Position);
 }
 
 void PacMan::SetTexture(aie::Texture* tex)
