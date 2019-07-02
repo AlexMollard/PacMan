@@ -18,6 +18,8 @@ struct Node
 	int _FScore;
 	int _HScore;
 
+	bool GetBlocked() { return _Blocked; };
+
 	Node* _Neighbours[NEIGHBOUR_COUNT]; 
 	int _Costs[NEIGHBOUR_COUNT]; 
  	bool _Blocked; 

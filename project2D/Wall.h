@@ -4,7 +4,7 @@
 class Wall : public GameObject
 {
 public:
-	Wall(const char* FileName);
+	Wall(const char* FileName, Grid* _Grid);
 	~Wall();
 
 	void OnCollision(GameObject* OtherObject);

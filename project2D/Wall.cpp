@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Wall::Wall(const char* FileName) : GameObject(FileName)
+Wall::Wall(const char* FileName, Grid* _Grid) : GameObject(FileName, _Grid)
 {
 	_Collider = new Collider(Vector2(-50, -50) / 2, Vector2(50, 50) / 2);
 	SetName("Wall");

@@ -1,15 +1,56 @@
-﻿c:\users\s191067\desktop\pacman\project2d\pacman.cpp(73): warning C4305: '=': truncation from 'double' to 'float'
+﻿c:\users\s191067\desktop\pacman\project2d\grid.h(9): warning C4099: 'Node': type name first seen using 'struct' now seen using 'class'
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(75): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\s191067\desktop\pacman\project2d\pacman.cpp(77): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 c:\users\s191067\desktop\pacman\project2d\pacman.cpp(78): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\s191067\desktop\pacman\project2d\pacman.cpp(82): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(86): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(87): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(95): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(96): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(100): warning C4305: '=': truncation from 'double' to 'float'
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(103): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(104): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(131): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(132): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(133): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\s191067\desktop\pacman\project2d\pacman.cpp(134): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(83): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(84): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(85): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(86): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(92): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(93): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(94): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(95): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(113): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(114): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(115): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(116): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(120): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(121): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(122): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(123): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(124): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(130): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(131): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(132): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(133): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(151): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(152): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(153): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(154): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(159): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(160): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(161): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(162): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(168): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(169): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(170): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(171): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(190): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(191): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(192): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(193): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(197): warning C4305: '=': truncation from 'double' to 'float'
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(198): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(199): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(200): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(201): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(207): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(208): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(209): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(210): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(253): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(254): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(255): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\pacman.cpp(256): warning C4244: '=': conversion from 'int' to 'float', possible loss of data

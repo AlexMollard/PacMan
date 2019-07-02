@@ -14,6 +14,8 @@ PacMan::PacMan(Grid* _Grid)
 	_PacmanOpenTexture = new aie::Texture("./textures/PacManOpen.png");
 	_Texture = _PacmanClosedTexture;
 	
+	_PathCurrentNode = 0;
+	_nextNode = nullptr;
 	_Name = "PacMan";
 	SetName(_Name);
 	_Health = 100;
@@ -45,6 +47,7 @@ PacMan::~PacMan()
 
 void PacMan::Update(float deltaTime)
 {
+	//_Grid->update(deltaTime);
 	time = deltaTime;
 	_Timer += 10 * deltaTime;
 	_PrevPosition = GetPosition();
@@ -61,8 +64,6 @@ void PacMan::Update(float deltaTime)
 
 	aie::Input* _Input = aie::Input::getInstance();
 
-	//Calculate Movement
-	Vector3 _TempPostion = _LocalTransform[1];
 	//Vector2 _Forward(_TempPostion.x, _TempPostion.y);
 	_Position = GetPosition();
 
@@ -70,58 +71,210 @@ void PacMan::Update(float deltaTime)
 	float _Rotation = GetLocalRotation();
 	if (_Input->wasKeyPressed(aie::INPUT_KEY_A))
 	{
+		Vector2 _TempPos;
+		int Ta = roundf(_Position.x / 50.0f);
+		_TempPos.x = Ta * 50;
+		int Tb = roundf(_Position.y / 50.0f);
+		_TempPos.y = Tb * 50;
+		_StartPos = _TempPos;
+		_Position = _TempPos;
+
 		_Rotation = 1.5708;
-		//_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Velocity.x = -_Acceleration;
-		_Velocity.y = 0;
-		int a = roundf(_Position.y / 50.0f);
-		_Position.y = a * 50;
+		int a = roundf((_Position.x - 50.0f) / 50.0f);
+		_NextPosition.x = a * 50;
+		int b = roundf(_Position.y / 50.0f);
+		_NextPosition.y = b * 50;
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			int a = roundf((_NextPosition.x - 50.0f) / 50.0f);
+			_NextPosition.x = a * 50;
+			int b = roundf(_NextPosition.y / 50.0f);
+			_NextPosition.y = b * 50;
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+		_EndPos = _nextNode->_Position;
+
+		if (_nextNode)
+		{
+			_Grid->FindPath(_StartPos, _EndPos, _Path);
+		}
 	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_D))
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_D)) // RIGHT
 	{
+		Vector2 _TempPos;
+		int Ta = roundf(_Position.x / 50.0f);
+		_TempPos.x = Ta * 50;
+		int Tb = roundf(_Position.y / 50.0f);
+		_TempPos.y = Tb * 50;
+		_StartPos = _TempPos;
+		_Position = _TempPos;
+
 		_Rotation = 4.71239;
-		//_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Velocity.x = _Acceleration;
-		_Velocity.y = 0;
-		int a = roundf(_Position.y / 50.0f);
-		_Position.y = a * 50;
+		int a = roundf((_Position.x + 50.0f) / 50.0f);
+		_NextPosition.x = a * 50;
+		int b = roundf(_Position.y / 50.0f);
+		_NextPosition.y = b * 50;
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			int a = roundf((_NextPosition.x + 50.0f) / 50.0f);
+			_NextPosition.x = a * 50;
+			int b = roundf(_NextPosition.y / 50.0f);
+			_NextPosition.y = b * 50;
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+		_EndPos = _nextNode->_Position;
+
+		if (_nextNode)
+		{
+			_Grid->FindPath(_StartPos, _EndPos, _Path);
+		}
 	}
 	else if (_Input->wasKeyPressed(aie::INPUT_KEY_W))
 	{
+		Vector2 _TempPos;
+		int Ta = roundf(_Position.x / 50.0f);
+		_TempPos.x = Ta * 50;
+		int Tb = roundf(_Position.y / 50.0f);
+		_TempPos.y = Tb * 50;
+		_StartPos = _TempPos;
+		_Position = _TempPos;
+
 		_Rotation = 0;
-		//_Velocity = _Velocity + (_Forward * _Acceleration);
-		_Velocity.x = 0;
-		_Velocity.y = _Acceleration;
-		int a = roundf(_Position.x / 50.0f);
-		_Position.x = a * 50;
+		int a = roundf((_Position.x) / 50.0f);
+		_NextPosition.x = a * 50;
+		int b = roundf((_Position.y + 50.0f) / 50.0f);
+		_NextPosition.y = b * 50;
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			int a = roundf((_NextPosition.x) / 50.0f);
+			_NextPosition.x = a * 50;
+			int b = roundf((_NextPosition.y + 50.0f) / 50.0f);
+			_NextPosition.y = b * 50;
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+		_EndPos = _nextNode->_Position;
+
+		if (_nextNode)
+		{
+			_Grid->FindPath(_StartPos, _EndPos, _Path);
+		}
 	}
 	else if (_Input->wasKeyPressed(aie::INPUT_KEY_S))
 	{
+		Vector2 _TempPos;
+		int Ta = roundf(_Position.x / 50.0f);
+		_TempPos.x = Ta * 50;
+		int Tb = roundf(_Position.y  / 50.0f);
+		_TempPos.y = Tb * 50;
+		_StartPos = _TempPos;
+		_Position = _TempPos;
+
 		_Rotation = 3.14159;
-		_Velocity.x = 0;
-		_Velocity.y = -_Acceleration;
-		int a = roundf(_Position.x / 50.0f);
-		_Position.x = a * 50;
+		int a = roundf((_Position.x) / 50.0f);
+		_NextPosition.x = a * 50;
+		int b = roundf((_Position.y - 50.0f) / 50.0f);
+		_NextPosition.y = b * 50;
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			int a = roundf((_NextPosition.x) / 50.0f);
+			_NextPosition.x = a * 50;
+			int b = roundf((_NextPosition.y - 50.0f) / 50.0f);
+			_NextPosition.y = b * 50;
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+		_EndPos = _nextNode->_Position;
+
+		if (_nextNode)
+		{
+			_Grid->FindPath(_StartPos, _EndPos, _Path);
+		}
 	}
+
+	
 	SetRotation(_Rotation);
-		
-	_StartPos = GetPosition();
-
-	if (_Velocity.magnitude() > 200)
+	/*if (_nextNode)
 	{
-		_Velocity.normalise();
-		_Velocity *= 200;
+		
+
+		_Grid->FindPath(_StartPos, _EndPos, _Path);
+
+	}*/
+
+	if (_Path.size() > 0 && _PathCurrentNode < _Path.size())
+	{
+		_Direction = _Path[_PathCurrentNode] - _Position;
+		_Direction.normalise();
+		_Position += _Direction * 100.0f * deltaTime;
+		SetPosition(_Position);
+		float dist = (_Position - _Path[_PathCurrentNode]).magnitude();
+		if (dist < 3)
+		{
+			_PathCurrentNode++;
+		}
+
 	}
+	else
+	{
 
-	_Position = _Position + (_Velocity * deltaTime);
+		
+		int a = roundf((_Position.x) / 50.0f);
+		_Position.x = a * 50;
+		int b = roundf(_Position.y / 50.0f);
+		_Position.y = b * 50;
+		SetPosition(_Position);
+	}
+		if (_PathCurrentNode == _Path.size())
+		{
+			_PathCurrentNode = 0;
+			_Path.clear();
+
+		}
+
+	//Debug stuff
+	//cout << "-------- New Update --------" << endl;
+	//cout << _StartPos.x << "	" << _StartPos.y << endl;
+	//cout << _EndPos.x << "	" << _EndPos.y << endl;
 
 
-	//int a = roundf(_Position.x / 50.0f);
-	//_Position.x = a * 50;
-	//int b = roundf(_Position.y / 50.0f);
-	//_Position.y = b * 50;
-	SetPosition(_Position);
+	//currentNode in .h
+	//if path.size > 0
+		//_Path[currentNode]
 
+		//direction = _Path[currentNode] - pos
+		//direction.normalise()
 
 
 	//Updates all objects
@@ -130,14 +283,40 @@ void PacMan::Update(float deltaTime)
 
 void PacMan::OnCollision(GameObject* OtherObject)
 {
-	_Velocity = Vector2(0, 0);
-	
-	int a = roundf(_PrevPosition.x / 50.0f);
-	_PrevPosition.x = a * 50;
-	int b = roundf(_PrevPosition.y / 50.0f);
-	_PrevPosition.y = b * 50;
-	SetPosition(_PrevPosition);
+	//_Velocity = Vector2(0, 0);
+	//
+	//int a = roundf(_PrevPosition.x / 50.0f);
+	//_PrevPosition.x = a * 50;
+	//int b = roundf(_PrevPosition.y / 50.0f);
+	//_PrevPosition.y = b * 50;
+	//SetPosition(_PrevPosition);
 
+}
+
+void PacMan::Draw(aie::Renderer2D * renderer)
+{
+	renderer->setRenderColour(1.0f, 1.0f, 0.0f);
+	renderer->drawSpriteTransformed3x3(_Texture, _GlobalTransform);
+	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
+	//
+	//
+	//
+	////Draw Path
+	//renderer->setRenderColour(1.0f, 1.0f, 1.0f);
+	//for (int i = 1; i < _Path.size(); i++)
+	//{
+	//	renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
+	//}
+	//
+	////Start point
+	//renderer->setRenderColour(0.2f, 0.7f, 0.0f);
+	//renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
+	//
+	////End point
+	//renderer->setRenderColour(0.7f, 0.0f, 0.2f);
+	//renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
+	//
+	//renderer->setRenderColour(1.0f, 1.0f, 1.0f);
 }
 
 std::string PacMan::GetName()

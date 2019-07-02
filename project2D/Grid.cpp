@@ -7,8 +7,8 @@
 #include <random>
 
 #define SQUARE_SIZE 50
-#define GRID_POSX 10
-#define GRID_POSY 10
+#define GRID_POSX 100
+#define GRID_POSY 100
 
 Grid::Grid(int Width, int Height)
 {
@@ -27,8 +27,8 @@ Grid::Grid(int Width, int Height)
 		for (int  y = 0; y < _Height; y++)
 		{
 			Vector2 pos;
-			pos.x = 100 + SQUARE_SIZE * x;
-			pos.y = 100 + SQUARE_SIZE * y;
+			pos.x = GRID_POSX + SQUARE_SIZE * x;
+			pos.y = GRID_POSY + SQUARE_SIZE * y;
 			_NodeList[x][y] = new Node(pos, x, y); 
 		}
 	}
@@ -163,50 +163,59 @@ void Grid::update(float deltaTime)
 	}
 
 	// Clear Nodes
-	//if (input->wasKeyPressed(aie::INPUT_KEY_C))
-	//{
-	//	for (int x = 0; x < _Width; x++)
-	//	{
-	//		for (int y = 0; y < _Height; y++)
-	//		{
-	//			_NodeList[x][y]->_Blocked = false;
-	//		}
-	//	}
-	//
-	//	for (int x = 0; x < _Width; x++)
-	//	{
-	//		for (int y = 0; y < _Height; y++)
-	//		{
-	//			if (map[y][x] == 1)
-	//			{
-	//				_NodeList[x][y]->_Blocked = true;
-	//			}
-	//		}
-	//	}
-	//}
+	if (input->wasKeyPressed(aie::INPUT_KEY_C))
+	{
+		for (int x = 0; x < _Width; x++)
+		{
+			for (int y = 0; y < _Height; y++)
+			{
+				_NodeList[x][y]->_Blocked = false;
+			}
+		}
 
-	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-	//{
-	//	int test = 0;
-	//	for (int x = 0; x < _Width; x++)
-	//	{
-	//		for (int y = 0; y < _Height; y++)
-	//		{
-	//			test = rand() % 10;
-	//
-	//			if (test < 4)
-	//				_NodeList[x][y]->_Blocked = true;
-	//			else
-	//				_NodeList[x][y]->_Blocked = false;
-	//		}
-	//	}
-	//}
+		for (int x = 0; x < _Width; x++)
+		{
+			for (int y = 0; y < _Height; y++)
+			{
+				if (x == 0 || x == _Width - 1 || y == 0 || y == _Height - 1)
+					_NodeList[x][y]->_Blocked = true;
+			}
+		}
+	
+		//for (int x = 0; x < _Width; x++)
+		//{
+		//	for (int y = 0; y < _Height; y++)
+		//	{
+		//		if (map[y][x] == 1)
+		//		{
+		//			_NodeList[x][y]->_Blocked = true;
+		//		}
+		//	}
+		//}
+	}
+
+	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
+	{
+		int test = 0;
+		for (int x = 0; x < _Width; x++)
+		{
+			for (int y = 0; y < _Height; y++)
+			{
+				test = rand() % 10;
+	
+				if (test < 4)
+					_NodeList[x][y]->_Blocked = true;
+				else
+					_NodeList[x][y]->_Blocked = false;
+			}
+		}
+	}
 }
 
 Node* Grid::GetNodeByPos(Vector2 Pos)
 {
-	int x = (Pos.x - GRID_POSX - (SQUARE_SIZE * 0.5)) / SQUARE_SIZE;
-	int y = (Pos.y - GRID_POSY - (SQUARE_SIZE * 0.5)) / SQUARE_SIZE;
+	int x = (Pos.x - GRID_POSX) / SQUARE_SIZE;
+	int y = (Pos.y - GRID_POSX) / SQUARE_SIZE;
 
 	if (x < 0 || y < 0 || x >= _Width || y >= _Height)
 		return nullptr;

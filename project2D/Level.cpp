@@ -24,7 +24,7 @@ Level::Level()
 			 }
 			 else if (map[y][x] == 1)
 			 {
-				 _Wall.push_back(new Wall("./textures/Wall.png"));
+				 _Wall.push_back(new Wall("./textures/Wall.png", _Grid));
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
@@ -33,7 +33,7 @@ Level::Level()
 			 }
 			 else if (map[y][x] == 2)
 			 {
-				 _Wall.push_back(new Wall("./textures/Open.png"));
+				 _Wall.push_back(new Wall("./textures/Open.png", _Grid));
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
@@ -100,7 +100,8 @@ void Level::Draw(aie::Renderer2D* renderer)
 {
 	_Grid->Draw(renderer);
 	GameObject::Draw(renderer);
-	_collisionManager->Draw(renderer);
+	//_collisionManager->Draw(renderer);
+	_PacMan->Draw(renderer);
 
 
 	////Draw Path
@@ -111,10 +112,10 @@ void Level::Draw(aie::Renderer2D* renderer)
 	//}
 	//
 	////Start point
-	//renderer->setRenderColour(0.2f, 0.7f, 0.0f);
+	//renderer->setRenderColour(0.0f, 1.0f, 0.0f);
 	//renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
 	//
 	////End point
-	//renderer->setRenderColour(0.7f, 0.0f, 0.2f);
+	//renderer->setRenderColour(1.0f, 0.0f, 0.0f);
 	//renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
 }
