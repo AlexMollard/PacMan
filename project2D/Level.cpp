@@ -1,6 +1,6 @@
 #include "Level.h"
 
-#define NodeSize 50
+#define NodeSize 100
 
 Level::Level()
 {
@@ -19,7 +19,6 @@ Level::Level()
 				 _PacMan->SetParent(this);
 				 _PacMan->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _PacMan->UpDateGlobalTransform();
-				 _PacMan->SetScale(Vector2(0.5f, 0.5f));
 				 _collisionManager->AddObject(_PacMan);
 			 }
 			 else if (map[y][x] == 1)
@@ -28,8 +27,6 @@ Level::Level()
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
-				 _Wall.back()->SetScale(Vector2(0.5f,0.5f));
-				 _collisionManager->AddObject(_Wall.back());
 			 }
 			 else if (map[y][x] == 2)
 			 {
@@ -37,8 +34,6 @@ Level::Level()
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
-				 _Wall.back()->SetScale(Vector2(0.5f, 0.5f));
-				 _collisionManager->AddObject(_Wall.back());
 			 }
 			 else if (map[y][x] == 3)
 			 {
@@ -46,18 +41,10 @@ Level::Level()
 				 _Ghost.back()->SetParent(this);
 				 _Ghost.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Ghost.back()->UpDateGlobalTransform();
-				 _Ghost.back()->SetScale(Vector2(0.5f, 0.5f));
 				 _collisionManager->AddObject(_Ghost.back());
 			 }
 		 }
 	 }
-
-
-	// _Tank = new Tank();
-	// _Tank->SetParent(this);
-	// _Tank->SetPosition(Vector2(500,500));
-	// _Tank->UpDateGlobalTransform();
-	// _collisionManager->AddObject(_Tank);
 }
 
 Level::~Level()
@@ -68,31 +55,10 @@ Level::~Level()
 
 void Level::Update(float deltaTime)
 {
+	_Ghost.front()->GetPacManPos(_PacMan);
 	GameObject::Update(deltaTime);
 	_collisionManager->Update(deltaTime);
 	_Grid->update(deltaTime);
-
-	aie::Input* input = aie::Input::getInstance();
-
-
-	Vector2 MousePos;
-	MousePos.x = input->getMouseX();
-	MousePos.y = input->getMouseY();
-
-	if (input->wasKeyPressed(aie::INPUT_KEY_Z))
-	{
-		_StartPos = MousePos;
-	}
-
-	//_Ghost.front()->SetPosition(_Path.back());
-	_StartPos = _Ghost.front()->GetPosition();
-
-
-	_EndPos = _PacMan->GetPosition();
-
-	_Grid->FindPath(_StartPos, _EndPos, _Path);
-
-	//_Ghost->SetPath(_Path);
 
 }
 
@@ -100,8 +66,9 @@ void Level::Draw(aie::Renderer2D* renderer)
 {
 	_Grid->Draw(renderer);
 	GameObject::Draw(renderer);
-	//_collisionManager->Draw(renderer);
+	_collisionManager->Draw(renderer);
 	_PacMan->Draw(renderer);
+	_Ghost.front()->Draw(renderer);
 
 
 	////Draw Path

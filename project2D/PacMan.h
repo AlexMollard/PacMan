@@ -13,23 +13,17 @@ public:
 	void Update(float deltaTime);
 	void OnCollision(GameObject* OtherObject);
 	void Draw(aie::Renderer2D* renderer);
-	std::string GetName();
+	void SetPath();
+	void Animate();
+	Vector2 RoundToNode(Vector2 _Pos, std::string _Dir);
 
-	aie::Texture* GetShipTexture();
-	aie::Texture* GetShipHitTexture();
-	void SetTexture(aie::Texture* tex);
-
+	float _NodeSizeF;
+	int _NodeSizeI;
 	std::string _Name;
-	float _Speed;
-	int _Health;
 	float _Timer;
-	float time;
-	float _Acceleration = 0.0f;
-	Vector2 _Velocity;
 	Vector2 _Position;
 	Vector2 _NextPosition;
 	Vector2 _PrevPosition;
-	Vector2 ForwardBuf;
 	Vector2 _Direction;
 	Node* _nextNode;
 	Grid* _Grid;
@@ -41,4 +35,5 @@ public:
 	Node* _CurrentNode;
 	int _PathCurrentNode;
 	std::vector<Vector2> _Path;
+	bool _CanDirection[4];
 };

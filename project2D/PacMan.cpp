@@ -7,8 +7,7 @@ using namespace std;
 
 PacMan::PacMan(Grid* _Grid)
 {
-	_Acceleration = 2000.0f;
-	_Collider = new Collider(Vector2(-20, -20), Vector2(20, 20));
+	_Collider = new Collider(Vector2(-40, -40), Vector2(40, 40));
 	this->_Grid = _Grid;
 	_PacmanClosedTexture = new aie::Texture("./textures/PacManClosed.png");
 	_PacmanOpenTexture = new aie::Texture("./textures/PacManOpen.png");
@@ -18,8 +17,13 @@ PacMan::PacMan(Grid* _Grid)
 	_nextNode = nullptr;
 	_Name = "PacMan";
 	SetName(_Name);
-	_Health = 100;
 	_Timer = 0;
+	_NodeSizeF = 50.0f;
+	_NodeSizeI = 50;
+	_CanDirection[0] = true;
+	_CanDirection[1] = true;
+	_CanDirection[2] = true;
+	_CanDirection[3] = true;
 }
 
 PacMan::~PacMan()
@@ -47,191 +51,19 @@ PacMan::~PacMan()
 
 void PacMan::Update(float deltaTime)
 {
-	//_Grid->update(deltaTime);
-	time = deltaTime;
+	aie::Input* _Input = aie::Input::getInstance();
+
+	_Position = GetPosition();
 	_Timer += 10 * deltaTime;
 	_PrevPosition = GetPosition();
 
 	if (_Timer > 2)
 	{
-		if (_Texture == _PacmanClosedTexture)
-			_Texture = _PacmanOpenTexture;
-		else
-			_Texture = _PacmanClosedTexture;
-
-		_Timer = 0;
+		Animate();
 	}
 
-	aie::Input* _Input = aie::Input::getInstance();
-
-	//Vector2 _Forward(_TempPostion.x, _TempPostion.y);
-	_Position = GetPosition();
-
-	//Calculate Rotation
-	float _Rotation = GetLocalRotation();
-	if (_Input->wasKeyPressed(aie::INPUT_KEY_A))
-	{
-		Vector2 _TempPos;
-		int Ta = roundf(_Position.x / 50.0f);
-		_TempPos.x = Ta * 50;
-		int Tb = roundf(_Position.y / 50.0f);
-		_TempPos.y = Tb * 50;
-		_StartPos = _TempPos;
-		_Position = _TempPos;
-
-		_Rotation = 1.5708;
-		int a = roundf((_Position.x - 50.0f) / 50.0f);
-		_NextPosition.x = a * 50;
-		int b = roundf(_Position.y / 50.0f);
-		_NextPosition.y = b * 50;
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
-		{
-			int a = roundf((_NextPosition.x - 50.0f) / 50.0f);
-			_NextPosition.x = a * 50;
-			int b = roundf(_NextPosition.y / 50.0f);
-			_NextPosition.y = b * 50;
-
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-			if (temp->GetBlocked())
-				break;
-
-			_nextNode = temp;
-		}
-		_EndPos = _nextNode->_Position;
-
-		if (_nextNode)
-		{
-			_Grid->FindPath(_StartPos, _EndPos, _Path);
-		}
-	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_D)) // RIGHT
-	{
-		Vector2 _TempPos;
-		int Ta = roundf(_Position.x / 50.0f);
-		_TempPos.x = Ta * 50;
-		int Tb = roundf(_Position.y / 50.0f);
-		_TempPos.y = Tb * 50;
-		_StartPos = _TempPos;
-		_Position = _TempPos;
-
-		_Rotation = 4.71239;
-		int a = roundf((_Position.x + 50.0f) / 50.0f);
-		_NextPosition.x = a * 50;
-		int b = roundf(_Position.y / 50.0f);
-		_NextPosition.y = b * 50;
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
-		{
-			int a = roundf((_NextPosition.x + 50.0f) / 50.0f);
-			_NextPosition.x = a * 50;
-			int b = roundf(_NextPosition.y / 50.0f);
-			_NextPosition.y = b * 50;
-
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-			if (temp->GetBlocked())
-				break;
-
-			_nextNode = temp;
-		}
-		_EndPos = _nextNode->_Position;
-
-		if (_nextNode)
-		{
-			_Grid->FindPath(_StartPos, _EndPos, _Path);
-		}
-	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_W))
-	{
-		Vector2 _TempPos;
-		int Ta = roundf(_Position.x / 50.0f);
-		_TempPos.x = Ta * 50;
-		int Tb = roundf(_Position.y / 50.0f);
-		_TempPos.y = Tb * 50;
-		_StartPos = _TempPos;
-		_Position = _TempPos;
-
-		_Rotation = 0;
-		int a = roundf((_Position.x) / 50.0f);
-		_NextPosition.x = a * 50;
-		int b = roundf((_Position.y + 50.0f) / 50.0f);
-		_NextPosition.y = b * 50;
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
-		{
-			int a = roundf((_NextPosition.x) / 50.0f);
-			_NextPosition.x = a * 50;
-			int b = roundf((_NextPosition.y + 50.0f) / 50.0f);
-			_NextPosition.y = b * 50;
-
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-
-			if (temp->GetBlocked())
-				break;
-
-			_nextNode = temp;
-		}
-		_EndPos = _nextNode->_Position;
-
-		if (_nextNode)
-		{
-			_Grid->FindPath(_StartPos, _EndPos, _Path);
-		}
-	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_S))
-	{
-		Vector2 _TempPos;
-		int Ta = roundf(_Position.x / 50.0f);
-		_TempPos.x = Ta * 50;
-		int Tb = roundf(_Position.y  / 50.0f);
-		_TempPos.y = Tb * 50;
-		_StartPos = _TempPos;
-		_Position = _TempPos;
-
-		_Rotation = 3.14159;
-		int a = roundf((_Position.x) / 50.0f);
-		_NextPosition.x = a * 50;
-		int b = roundf((_Position.y - 50.0f) / 50.0f);
-		_NextPosition.y = b * 50;
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
-		{
-			int a = roundf((_NextPosition.x) / 50.0f);
-			_NextPosition.x = a * 50;
-			int b = roundf((_NextPosition.y - 50.0f) / 50.0f);
-			_NextPosition.y = b * 50;
-
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-			if (temp->GetBlocked())
-				break;
-
-			_nextNode = temp;
-		}
-		_EndPos = _nextNode->_Position;
-
-		if (_nextNode)
-		{
-			_Grid->FindPath(_StartPos, _EndPos, _Path);
-		}
-	}
-
-	
-	SetRotation(_Rotation);
-	/*if (_nextNode)
-	{
-		
-
-		_Grid->FindPath(_StartPos, _EndPos, _Path);
-
-	}*/
+	if (_Input->wasKeyPressed(aie::INPUT_KEY_A) || _Input->wasKeyPressed(aie::INPUT_KEY_S) || _Input->wasKeyPressed(aie::INPUT_KEY_D) || _Input->wasKeyPressed(aie::INPUT_KEY_W))
+		SetPath();
 
 	if (_Path.size() > 0 && _PathCurrentNode < _Path.size())
 	{
@@ -239,57 +71,201 @@ void PacMan::Update(float deltaTime)
 		_Direction.normalise();
 		_Position += _Direction * 100.0f * deltaTime;
 		SetPosition(_Position);
+
 		float dist = (_Position - _Path[_PathCurrentNode]).magnitude();
 		if (dist < 3)
-		{
 			_PathCurrentNode++;
-		}
-
 	}
 	else
 	{
-
-		
-		int a = roundf((_Position.x) / 50.0f);
-		_Position.x = a * 50;
-		int b = roundf(_Position.y / 50.0f);
-		_Position.y = b * 50;
+		_Position = RoundToNode(_Position, "None");
 		SetPosition(_Position);
 	}
-		if (_PathCurrentNode == _Path.size())
-		{
-			_PathCurrentNode = 0;
-			_Path.clear();
-
-		}
-
-	//Debug stuff
-	//cout << "-------- New Update --------" << endl;
-	//cout << _StartPos.x << "	" << _StartPos.y << endl;
-	//cout << _EndPos.x << "	" << _EndPos.y << endl;
-
-
-	//currentNode in .h
-	//if path.size > 0
-		//_Path[currentNode]
-
-		//direction = _Path[currentNode] - pos
-		//direction.normalise()
-
 
 	//Updates all objects
 	GameObject::Update(deltaTime);
 }
 
+Vector2 PacMan::RoundToNode(Vector2 _Pos, std::string _Dir)
+{
+	if (_Dir == "RIGHT")
+	{
+		int a = roundf((_Pos.x + _NodeSizeF) / _NodeSizeF);
+		_Pos.x = a * _NodeSizeI;
+		int b = roundf(_Pos.y / _NodeSizeF);
+		_Pos.y = b * _NodeSizeI;
+	}
+	else if (_Dir == "LEFT")
+	{
+		int a = roundf((_Pos.x - _NodeSizeF) / _NodeSizeF);
+		_Pos.x = a * _NodeSizeI;
+		int b = roundf(_Pos.y / _NodeSizeF);
+		_Pos.y = b * _NodeSizeI;
+	}
+	else if (_Dir == "UP")
+	{
+		int a = roundf((_Pos.x) / _NodeSizeF);
+		_Pos.x = a * _NodeSizeI;
+		int b = roundf((_Pos.y + _NodeSizeF) / _NodeSizeF);
+		_Pos.y = b * _NodeSizeI;
+	}
+	else if (_Dir == "DOWN")
+	{
+		int a = roundf((_Pos.x) / _NodeSizeF);
+		_Pos.x = a * _NodeSizeI;
+		int b = roundf((_Pos.y - _NodeSizeF) / _NodeSizeF);
+		_Pos.y = b * _NodeSizeI;
+	}
+	else
+	{
+		int a = roundf(_Pos.x / _NodeSizeF);
+		_Pos.x = a * _NodeSizeI;
+		int b = roundf(_Pos.y / _NodeSizeF);
+		_Pos.y = b * _NodeSizeI;
+	}
+
+	return _Pos;
+}
+
+void PacMan::SetPath()
+{
+	aie::Input* _Input = aie::Input::getInstance();
+
+	//Calculate Rotation
+	float _Rotation = GetLocalRotation();
+	if (_Input->wasKeyPressed(aie::INPUT_KEY_A) && _CanDirection[0])
+	{
+		_Rotation = 1.5708;
+		
+		_Position = RoundToNode(_Position, "None");
+		_StartPos = _Position;
+
+		_NextPosition = RoundToNode(_Position, "LEFT");
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			_NextPosition = RoundToNode(_NextPosition, "LEFT");
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+
+		_CanDirection[0] = false;
+		_CanDirection[1] = true;
+		_CanDirection[2] = true;
+		_CanDirection[3] = true;
+		_PathCurrentNode = 1;
+	}
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_D) && _CanDirection[1]) // RIGHT
+	{
+		_Rotation = 4.71239;
+		
+		_Position = RoundToNode(_Position, "None");
+		_StartPos = _Position;
+
+		_NextPosition = RoundToNode(_Position, "RIGHT");
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			_NextPosition = RoundToNode(_NextPosition, "RIGHT");
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+
+
+		_CanDirection[0] = true;
+		_CanDirection[1] = false;
+		_CanDirection[2] = true;
+		_CanDirection[3] = true;
+		_PathCurrentNode = 1;
+	}
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_W) && _CanDirection[2])
+	{
+		_Rotation = 0;
+	
+		_Position = RoundToNode(_Position, "None");
+		_StartPos = _Position;
+
+		_NextPosition = RoundToNode(_Position, "UP");
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			_NextPosition = RoundToNode(_NextPosition, "UP");
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+
+		_CanDirection[0] = true;
+		_CanDirection[1] = true;
+		_CanDirection[2] = false;
+		_CanDirection[3] = true;
+		_PathCurrentNode = 1;
+	}
+	else if (_Input->wasKeyPressed(aie::INPUT_KEY_S) && _CanDirection[3])
+	{
+		_Rotation = 3.14159;
+		
+		_Position = RoundToNode(_Position, "None");
+		_StartPos = _Position;
+
+		_NextPosition = RoundToNode(_Position, "DOWN");
+
+		_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+		while (_nextNode->GetBlocked() == false)
+		{
+			_NextPosition = RoundToNode(_NextPosition, "DOWN");
+
+			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			if (temp->GetBlocked())
+				break;
+
+			_nextNode = temp;
+		}
+
+		_CanDirection[0] = true;
+		_CanDirection[1] = true;
+		_CanDirection[2] = true;
+		_CanDirection[3] = false;
+		_PathCurrentNode = 1;
+	}
+
+
+	SetRotation(_Rotation);
+	_EndPos = _nextNode->_Position;
+	_Grid->FindPath(_StartPos, _EndPos, _Path);
+}
+
+void PacMan::Animate()
+{
+	if (_Texture == _PacmanClosedTexture)
+		_Texture = _PacmanOpenTexture;
+	else
+		_Texture = _PacmanClosedTexture;
+
+	_Timer = 0;
+}
+
 void PacMan::OnCollision(GameObject* OtherObject)
 {
-	//_Velocity = Vector2(0, 0);
-	//
-	//int a = roundf(_PrevPosition.x / 50.0f);
-	//_PrevPosition.x = a * 50;
-	//int b = roundf(_PrevPosition.y / 50.0f);
-	//_PrevPosition.y = b * 50;
-	//SetPosition(_PrevPosition);
 
 }
 
@@ -298,43 +274,22 @@ void PacMan::Draw(aie::Renderer2D * renderer)
 	renderer->setRenderColour(1.0f, 1.0f, 0.0f);
 	renderer->drawSpriteTransformed3x3(_Texture, _GlobalTransform);
 	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
-	//
-	//
-	//
-	////Draw Path
-	//renderer->setRenderColour(1.0f, 1.0f, 1.0f);
-	//for (int i = 1; i < _Path.size(); i++)
-	//{
-	//	renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
-	//}
-	//
-	////Start point
-	//renderer->setRenderColour(0.2f, 0.7f, 0.0f);
-	//renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
-	//
-	////End point
-	//renderer->setRenderColour(0.7f, 0.0f, 0.2f);
-	//renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
-	//
-	//renderer->setRenderColour(1.0f, 1.0f, 1.0f);
-}
 
-std::string PacMan::GetName()
-{
-	return _Name;
-}
 
-void PacMan::SetTexture(aie::Texture* tex)
-{
-	_Texture = tex;
-}
-
-aie::Texture* PacMan::GetShipTexture()
-{
-	return _PacmanClosedTexture;
-}
-
-aie::Texture* PacMan::GetShipHitTexture()
-{
-	return _PacmanOpenTexture;
+	//Draw Path
+	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
+	for (int i = 1; i < _Path.size(); i++)
+	{
+		renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
+	}
+	
+	//Start point
+	renderer->setRenderColour(0.2f, 0.7f, 0.0f);
+	renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
+	
+	//End point
+	renderer->setRenderColour(0.7f, 0.0f, 0.2f);
+	renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
+	
+	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
 }

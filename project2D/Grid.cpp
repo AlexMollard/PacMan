@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <random>
 
-#define SQUARE_SIZE 50
+#define SQUARE_SIZE 100
 #define GRID_POSX 100
 #define GRID_POSY 100
 

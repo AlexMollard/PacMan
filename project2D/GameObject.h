@@ -44,7 +44,7 @@ public:
 	float GetScore();
 	void SetScore(float newScore);
 
-	std::string GameObject::GetName();
+	std::string GetName();
 	void SetName(std::string name);
 	std::string _Name;
 	float _Score;
