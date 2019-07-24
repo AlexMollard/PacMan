@@ -3,16 +3,16 @@
 #include "Application.h"
 #include <iostream>
 #include <math.h>
+#include "Dot.h"
 using namespace std;
 
 PacMan::PacMan(Grid* _Grid)
 {
-	_Collider = new Collider(Vector2(-40, -40), Vector2(40, 40));
+	_Collider = new Collider(Vector2(-20, -20), Vector2(20, 20));
 	this->_Grid = _Grid;
 	_PacmanClosedTexture = new aie::Texture("./textures/PacManClosed.png");
 	_PacmanOpenTexture = new aie::Texture("./textures/PacManOpen.png");
 	_Texture = _PacmanClosedTexture;
-	
 	_PathCurrentNode = 0;
 	_nextNode = nullptr;
 	_Name = "PacMan";
@@ -24,6 +24,8 @@ PacMan::PacMan(Grid* _Grid)
 	_CanDirection[1] = true;
 	_CanDirection[2] = true;
 	_CanDirection[3] = true;
+	_Score = 0;
+	_Lifes = 3;
 }
 
 PacMan::~PacMan()
@@ -125,6 +127,15 @@ Vector2 PacMan::RoundToNode(Vector2 _Pos, std::string _Dir)
 	}
 
 	return _Pos;
+}
+
+void PacMan::Respawn()
+{
+	_Position = RoundToNode(_Spawn, "Spawn");
+	SetPosition(_Position);
+	_StartPos = _Position;
+	_EndPos = _Position;
+	_Grid->FindPath(_StartPos, _EndPos, _Path);
 }
 
 void PacMan::SetPath()
@@ -266,7 +277,19 @@ void PacMan::Animate()
 
 void PacMan::OnCollision(GameObject* OtherObject)
 {
+	if (OtherObject->GetName() == "Dot")
+	{
+		if (OtherObject->GetTexture() != nullptr)
+		{	
+			_Score += 10;
+		}
+	}
 
+	if ((OtherObject->GetName() == "Red") || (OtherObject->GetName() == "Cyan") || (OtherObject->GetName() == "Orange") || (OtherObject->GetName() == "Purple"))
+	{
+		cout << "You should be dead" << endl;
+		_Lifes -= 1;
+	}
 }
 
 void PacMan::Draw(aie::Renderer2D * renderer)
@@ -276,20 +299,21 @@ void PacMan::Draw(aie::Renderer2D * renderer)
 	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
 
 
-	//Draw Path
-	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
-	for (int i = 1; i < _Path.size(); i++)
-	{
-		renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
-	}
-	
-	//Start point
-	renderer->setRenderColour(0.2f, 0.7f, 0.0f);
-	renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
-	
-	//End point
-	renderer->setRenderColour(0.7f, 0.0f, 0.2f);
-	renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
+
+	////Draw Path
+	//renderer->setRenderColour(1.0f, 1.0f, 1.0f);
+	//for (int i = 1; i < _Path.size(); i++)
+	//{
+	//	renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
+	//}
+	//
+	////Start point
+	//renderer->setRenderColour(0.2f, 0.7f, 0.0f);
+	//renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
+	//
+	////End point
+	//renderer->setRenderColour(0.7f, 0.0f, 0.2f);
+	//renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
 	
 	renderer->setRenderColour(1.0f, 1.0f, 1.0f);
 }

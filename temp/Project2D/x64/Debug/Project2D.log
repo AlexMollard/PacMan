@@ -1,8 +1,9 @@
-﻿  Ghost.cpp
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\grid.h(9): warning C4099: 'Node': type name first seen using 'struct' now seen using 'class'
-  c:\users\alexm\desktop\programming\pacman\trunk\project2d\pathheap.h(5): note: see declaration of 'Node'
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\ghost.cpp(66): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\ghost.cpp(67): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\ghost.cpp(68): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\alexm\desktop\programming\pacman\trunk\project2d\ghost.cpp(69): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Project2D.vcxproj -> C:\Users\alexm\Desktop\Programming\PacMan\trunk\temp\Project2D\x64\Debug\Project2D.exe
+﻿c:\users\s191067\desktop\pacman\project2d\grid.h(9): warning C4099: 'Node': type name first seen using 'struct' now seen using 'class'
+c:\users\s191067\desktop\pacman\project2d\level.cpp(23): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(24): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(32): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(41): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(48): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(53): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(55): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+c:\users\s191067\desktop\pacman\project2d\level.cpp(56): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data

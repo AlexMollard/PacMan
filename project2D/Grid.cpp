@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <random>
 
-#define SQUARE_SIZE 100
+#define SQUARE_SIZE 50
 #define GRID_POSX 100
 #define GRID_POSY 100
 
@@ -15,6 +15,7 @@ Grid::Grid(int Width, int Height)
 	_Width = Width; 
 	_Height = Height; 
 	_ToggleLines = false;
+	_ToggleGrid = false;
 	_NodeList = new Node**[_Width];
 
 	for (int i = 0; i < _Width; i++)
@@ -120,27 +121,31 @@ Grid::~Grid()
 
 void Grid::Draw(aie::Renderer2D* pRenderer)
 {
-	for (int x = 0; x < _Width; x++)
+	if (_ToggleGrid)
 	{
-		for (int y = 0; y < _Height; y++)
+
+		for (int x = 0; x < _Width; x++)
 		{
-			Vector2 v2Pos = _NodeList[x][y]->_Position;
-
-			pRenderer->setRenderColour(0.2f, 0.2f, 0.2f);
-
-			if (_NodeList[x][y]->_Blocked)
-				pRenderer->setRenderColour(0.0f,0.4f,1.0f);
-
-			pRenderer->drawBox(v2Pos.x, v2Pos.y, SQUARE_SIZE - 10.0f, SQUARE_SIZE - 10.0f);
-			if (_ToggleLines)
+			for (int y = 0; y < _Height; y++)
 			{
-				for (int n = 0; n < NEIGHBOUR_COUNT; ++n)
+				Vector2 v2Pos = _NodeList[x][y]->_Position;
+
+				pRenderer->setRenderColour(0.2f, 0.2f, 0.2f);
+
+				if (_NodeList[x][y]->_Blocked)
+					pRenderer->setRenderColour(0.0f, 0.4f, 1.0f);
+
+				pRenderer->drawBox(v2Pos.x, v2Pos.y, SQUARE_SIZE - 10.0f, SQUARE_SIZE - 10.0f);
+				if (_ToggleLines)
 				{
-					if (_NodeList[x][y]->_Neighbours[n])
+					for (int n = 0; n < NEIGHBOUR_COUNT; ++n)
 					{
-						Vector2 NeighbourPos = _NodeList[x][y]->_Neighbours[n]->_Position;
-						pRenderer->setRenderColour(0.3f, 0.0f, 0.3f);
-						pRenderer->drawLine(v2Pos.x, v2Pos.y, NeighbourPos.x, NeighbourPos.y, 2.5f);
+						if (_NodeList[x][y]->_Neighbours[n])
+						{
+							Vector2 NeighbourPos = _NodeList[x][y]->_Neighbours[n]->_Position;
+							pRenderer->setRenderColour(0.3f, 0.0f, 0.3f);
+							pRenderer->drawLine(v2Pos.x, v2Pos.y, NeighbourPos.x, NeighbourPos.y, 2.5f);
+						}
 					}
 				}
 			}
@@ -162,25 +167,34 @@ void Grid::update(float deltaTime)
 			_ToggleLines = true;
 	}
 
-	// Clear Nodes
-	if (input->wasKeyPressed(aie::INPUT_KEY_C))
+	//Toggle grid
+	if (input->wasKeyPressed(aie::INPUT_KEY_F))
 	{
-		for (int x = 0; x < _Width; x++)
-		{
-			for (int y = 0; y < _Height; y++)
-			{
-				_NodeList[x][y]->_Blocked = false;
-			}
-		}
+		if (_ToggleGrid)
+			_ToggleGrid = false;
+		else
+			_ToggleGrid = true;
+	}
 
-		for (int x = 0; x < _Width; x++)
-		{
-			for (int y = 0; y < _Height; y++)
-			{
-				if (x == 0 || x == _Width - 1 || y == 0 || y == _Height - 1)
-					_NodeList[x][y]->_Blocked = true;
-			}
-		}
+	// Clear Nodes
+	//if (input->wasKeyPressed(aie::INPUT_KEY_C))
+	//{
+	//	for (int x = 0; x < _Width; x++)
+	//	{
+	//		for (int y = 0; y < _Height; y++)
+	//		{
+	//			_NodeList[x][y]->_Blocked = false;
+	//		}
+	//	}
+	//
+	//	for (int x = 0; x < _Width; x++)
+	//	{
+	//		for (int y = 0; y < _Height; y++)
+	//		{
+	//			if (x == 0 || x == _Width - 1 || y == 0 || y == _Height - 1)
+	//				_NodeList[x][y]->_Blocked = true;
+	//		}
+	//	}
 	
 		//for (int x = 0; x < _Width; x++)
 		//{
@@ -192,24 +206,24 @@ void Grid::update(float deltaTime)
 		//		}
 		//	}
 		//}
-	}
+	//}
 
-	if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
-	{
-		int test = 0;
-		for (int x = 0; x < _Width; x++)
-		{
-			for (int y = 0; y < _Height; y++)
-			{
-				test = rand() % 10;
-	
-				if (test < 4)
-					_NodeList[x][y]->_Blocked = true;
-				else
-					_NodeList[x][y]->_Blocked = false;
-			}
-		}
-	}
+	//if (input->wasKeyPressed(aie::INPUT_KEY_SPACE))
+	//{
+	//	int test = 0;
+	//	for (int x = 0; x < _Width; x++)
+	//	{
+	//		for (int y = 0; y < _Height; y++)
+	//		{
+	//			test = rand() % 10;
+	//
+	//			if (test < 4)
+	//				_NodeList[x][y]->_Blocked = true;
+	//			else
+	//				_NodeList[x][y]->_Blocked = false;
+	//		}
+	//	}
+	//}
 }
 
 Node* Grid::GetNodeByPos(Vector2 Pos)

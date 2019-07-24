@@ -23,6 +23,7 @@ public:
 	int CalculateHeuristic(Node* node, Node* _End);
 private:
 	bool _ToggleLines;
+	bool _ToggleGrid;
 
 	Node*** _NodeList;
 	

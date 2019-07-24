@@ -1,13 +1,16 @@
 #include "Level.h"
 
-#define NodeSize 100
+#define NodeSize 50
 
 Level::Level()
 {
 	SetName("Level");
 	_collisionManager = new CollisionManager();
 	_Grid = new Grid(15, 15);
-
+	_PacManTexture = new aie::Texture("./textures/PacManOpen.png");
+	_Font = new aie::Font("./font/consolas.ttf", 32);
+	_Score = 0;
+	_Lifes = 3;
 
 	 for (int x = 0; x < 15; x++)
 	 {
@@ -18,8 +21,18 @@ Level::Level()
 				 _PacMan = new PacMan(_Grid);
 				 _PacMan->SetParent(this);
 				 _PacMan->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _PacMan->SetSpawn(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _PacMan->UpDateGlobalTransform();
 				 _collisionManager->AddObject(_PacMan);
+			 }
+			 else if (map[y][x] == 0)
+			 {
+				 _Dot.push_back(new Dot("./textures/Dot.png", _Grid));
+				 _Dot.back()->SetParent(this);
+				 _Dot.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _Dot.back()->UpDateGlobalTransform();
+				 _Dot.back()->SetScale(Vector2(0.5f, 0.5f));
+				 _collisionManager->AddObject(_Dot.back());
 			 }
 			 else if (map[y][x] == 1)
 			 {
@@ -37,9 +50,10 @@ Level::Level()
 			 }
 			 else if (map[y][x] == 3)
 			 {
-				 _Ghost.push_back(new Ghost("./textures/GhostPurple.png", _Grid));
+				 _Ghost.push_back(new Ghost(_Grid, _Ghost.size()));
 				 _Ghost.back()->SetParent(this);
 				 _Ghost.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _Ghost.back()->SetSpawn(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Ghost.back()->UpDateGlobalTransform();
 				 _collisionManager->AddObject(_Ghost.back());
 			 }
@@ -55,34 +69,71 @@ Level::~Level()
 
 void Level::Update(float deltaTime)
 {
-	_Ghost.front()->GetPacManPos(_PacMan);
-	GameObject::Update(deltaTime);
-	_collisionManager->Update(deltaTime);
-	_Grid->update(deltaTime);
+	if (_Lifes > 0)
+	{
+		for (int i = 0; i < _Ghost.size(); i++)
+		{
+			_Ghost[i]->GetPacManPos(_PacMan);
 
+			if (_PacMan->_Path.size() > 0)
+				_Ghost[i]->GetPacManEndPos(_PacMan->_Path.back());
+		}
+		GameObject::Update(deltaTime);
+		_collisionManager->Update(deltaTime);
+		_Grid->update(deltaTime);
+
+		_Score = _PacMan->GetScore();
+		if (_Lifes != _PacMan->GetLifes())
+		{
+			for (int i = 0; i < _Ghost.size(); i++)
+			{
+				_Ghost[i]->Respawn();
+			}
+
+			_PacMan->Respawn();
+
+			_Lifes = _PacMan->GetLifes();
+		}
+	}
 }
 
 void Level::Draw(aie::Renderer2D* renderer)
 {
 	_Grid->Draw(renderer);
 	GameObject::Draw(renderer);
-	_collisionManager->Draw(renderer);
 	_PacMan->Draw(renderer);
-	_Ghost.front()->Draw(renderer);
 
+	for (int i = 0; i < _Ghost.size(); i++)
+	{
+		_Ghost[i]->Draw(renderer);
+	}
+	//_collisionManager->Draw(renderer);
 
-	////Draw Path
-	//renderer->setRenderColour(1.0f, 1.0f, 0.0f);
-	//for (int i = 1; i < _Path.size(); i++)
-	//{
-	//	renderer->drawLine(_Path[i - 1].x, _Path[i - 1].y, _Path[i].x, _Path[i].y, 3);
-	//}
-	//
-	////Start point
-	//renderer->setRenderColour(0.0f, 1.0f, 0.0f);
-	//renderer->drawCircle(_StartPos.x, _StartPos.y, 10);
-	//
-	////End point
-	//renderer->setRenderColour(1.0f, 0.0f, 0.0f);
-	//renderer->drawCircle(_EndPos.x, _EndPos.y, 10);
+	// output the score
+	char score[32];
+	sprintf_s(score, 32, "Score: %i", _Score);
+	renderer->drawText(_Font, score, 385, 785);
+
+	switch (_Lifes)
+	{
+	case 3:
+		renderer->drawSprite(_PacManTexture, 200.0f, 850.0f, 0.0f, 0.0f, 4.71239f);
+	case 2:
+		renderer->drawSprite(_PacManTexture, 150.0f, 850.0f, 0.0f, 0.0f, 4.71239f);
+	case 1:
+		renderer->drawSprite(_PacManTexture, 100.0f, 850.0f, 0.0f, 0.0f, 4.71239f);
+	default:
+		break;
+	}
+
+	if (_Lifes <= 0)
+	{
+		renderer->drawText(_Font, "YOU LOST YOU DUMB HEAD", 100.0f, 850.0f);
+	}
+
+}
+
+void Level::GameOver()
+{
+
 }

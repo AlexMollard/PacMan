@@ -173,12 +173,8 @@ void GameObject::SetLocalRotation(float newRotation)
 	_LocalTransform.rotation = newRotation;
 }
 
-float GameObject::GetScore()
-{
-	return _Score;
-}
 
-void GameObject::SetScore(float newScore)
+void GameObject::AddScore(int newScore)
 {
 	_Score = newScore;
 }

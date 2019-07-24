@@ -28,6 +28,7 @@ public:
 	void SetRotation(float radians);
 	float GetRotation();
 	float GetLocalRotation();
+	void AddScore(int newScore);
 	bool collided;
 
 	void SetScale(Vector2 v2Scale);
@@ -41,15 +42,12 @@ public:
 
 	void SetLocalRotation(float newRotation);
 
-	float GetScore();
-	void SetScore(float newScore);
-
 	std::string GetName();
 	void SetName(std::string name);
 	std::string _Name;
 	float _Score;
 
-
+	aie::Texture* GetTexture() { return _Texture; };
 
 	Collider* GetCollider() { return _Collider; }
 	void SetCollided(bool hit);

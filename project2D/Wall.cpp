@@ -4,7 +4,7 @@ using namespace std;
 
 Wall::Wall(const char* FileName, Grid* _Grid) : GameObject(FileName, _Grid)
 {
-	_Collider = new Collider(Vector2(-50, -50) / 2, Vector2(50, 50) / 2);
+	_Collider = new Collider(Vector2(-25, -25) / 2, Vector2(25, 25) / 2);
 	SetName("Wall");
 }
 

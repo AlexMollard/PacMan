@@ -4,6 +4,7 @@
 #include "Node.h"
 #include "Grid.h"
 
+
 class PacMan : public GameObject
 {
 public:
@@ -16,7 +17,10 @@ public:
 	void SetPath();
 	void Animate();
 	Vector2 RoundToNode(Vector2 _Pos, std::string _Dir);
-
+	int GetScore() { return _Score; };
+	int GetLifes() { return _Lifes; };
+	void SetSpawn(Vector2 Spawn) { _Spawn = Spawn; };
+	void Respawn();
 	float _NodeSizeF;
 	int _NodeSizeI;
 	std::string _Name;
@@ -25,6 +29,7 @@ public:
 	Vector2 _NextPosition;
 	Vector2 _PrevPosition;
 	Vector2 _Direction;
+	Vector2 _Spawn;
 	Node* _nextNode;
 	Grid* _Grid;
 	aie::Texture*	_PacmanClosedTexture;
@@ -36,4 +41,7 @@ public:
 	int _PathCurrentNode;
 	std::vector<Vector2> _Path;
 	bool _CanDirection[4];
+	int _Lifes;
+	int _Score;
+
 };
