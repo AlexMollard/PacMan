@@ -43,5 +43,6 @@ public:
 	bool _CanDirection[4];
 	int _Lifes;
 	int _Score;
+	bool _PowerUp;
 
 };

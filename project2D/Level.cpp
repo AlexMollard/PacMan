@@ -1,5 +1,5 @@
 #include "Level.h"
-
+#include <iostream>
 #define NodeSize 50
 
 Level::Level()
@@ -10,7 +10,9 @@ Level::Level()
 	_PacManTexture = new aie::Texture("./textures/PacManOpen.png");
 	_Font = new aie::Font("./font/consolas.ttf", 32);
 	_Score = 0;
+	_Timer = 20.0f;
 	_Lifes = 3;
+	_PowerUp = false;
 
 	 for (int x = 0; x < 15; x++)
 	 {
@@ -57,6 +59,14 @@ Level::Level()
 				 _Ghost.back()->UpDateGlobalTransform();
 				 _collisionManager->AddObject(_Ghost.back());
 			 }
+			 else if (map[y][x] == 4)
+			 {
+				 _PlusDot.push_back(new PlusDot("./textures/Dot.png", _Grid));
+				 _PlusDot.back()->SetParent(this);
+				 _PlusDot.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _PlusDot.back()->UpDateGlobalTransform();
+				 _collisionManager->AddObject(_PlusDot.back());
+			 }
 		 }
 	 }
 }
@@ -69,6 +79,8 @@ Level::~Level()
 
 void Level::Update(float deltaTime)
 {
+	_Timer += deltaTime;
+
 	if (_Lifes > 0)
 	{
 		for (int i = 0; i < _Ghost.size(); i++)
@@ -95,6 +107,29 @@ void Level::Update(float deltaTime)
 			_Lifes = _PacMan->GetLifes();
 		}
 	}
+
+	if (_PacMan->_PowerUp == true && _PowerUp == false)
+	{
+		_PowerUp = true;
+
+		for (int i = 0; i < _Ghost.size(); i++)
+		{
+			_Ghost[i]->SetFlee(true);
+			_Ghost[i]->SetTimer(0.0f);
+		}
+		_Timer = 0.0f;
+	}
+
+	if (_Timer > 10.0f)
+	{
+		_PowerUp = false;
+		_PacMan->_PowerUp = false;
+		for (int i = 0; i < _Ghost.size(); i++)
+		{
+			_Ghost[i]->SetFlee(false);
+		}
+	}
+
 }
 
 void Level::Draw(aie::Renderer2D* renderer)
@@ -130,7 +165,16 @@ void Level::Draw(aie::Renderer2D* renderer)
 	{
 		renderer->drawText(_Font, "YOU LOST YOU DUMB HEAD", 100.0f, 850.0f);
 	}
+}
 
+bool Level::GetPowerUp()
+{
+	return _PowerUp;
+}
+
+void Level::SetPowerUp(bool power)
+{
+	_PowerUp = power;
 }
 
 void Level::GameOver()

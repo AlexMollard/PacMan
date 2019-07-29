@@ -4,46 +4,24 @@
 #include <time.h>
 using namespace std;
 
-Ghost::Ghost(Grid* _Grid, int ghostnum)
+Ghost::Ghost(Grid* Grid, int ghostnum)
 {
 	_Collider = new Collider(Vector2(-10, -10), Vector2(10, 10));
 	_GhostPurple = new aie::Texture("./textures/GhostPurple.png");
 	_GhostCyan = new aie::Texture("./textures/GhostCyan.png");
 	_GhostOrange = new aie::Texture("./textures/GhostOrange.png");
 	_GhostRed = new aie::Texture("./textures/GhostRed.png");
+	_Scared = new aie::Texture("./textures/ScaredGhost.PNG");
 	_CowardRun = false;
 
-	switch (ghostnum)
-	{
-	case 0:
-		_Texture = _GhostPurple;
-		SetName("Purple");
+	_GhostNumber = ghostnum;
+	_Grid = Grid;
+	_NodeSizeF = 50;
+	_NodeSizeI = 50;
+	_Timer = 0;
+	srand(time(NULL));
 
-		break;
-	case 1:
-		_Texture = _GhostCyan;
-		SetName("Cyan");
-
-		break;
-	case 2:
-		_Texture = _GhostOrange;
-		SetName("Orange");
-
-		break;
-	case 3:
-		_Texture = _GhostRed;
-		SetName("Red");
-
-		break;
-	default:
-		break;
-	}
-
-	this->_Grid = _Grid;
-	 _NodeSizeF = 50;
-	 _NodeSizeI = 50;
-	 _Timer = 0;
-	 srand(time(NULL));
+	ResetGhosts();
 }
 
 
@@ -51,33 +29,82 @@ Ghost::~Ghost()
 {
 }
 
+void Ghost::ResetGhosts()
+{
+	switch (_GhostNumber)
+	{
+	case 0:
+		_Texture = _GhostPurple;
+		SetName("Purple");
+		_State = _CHASE;
+		break;
+	case 1:
+		_Texture = _GhostCyan;
+		SetName("Cyan");
+		_State = _RANDOM;
+		break;
+	case 2:
+		_Texture = _GhostOrange;
+		SetName("Orange");
+		_State = _COWARD;
+		break;
+	case 3:
+		_Texture = _GhostRed;
+		SetName("Red");
+		_State = _AMBUSH;
+		break;
+	default:
+		break;
+	}
+}
+
 void Ghost::Update(float deltaTime)
 {
-	if (GetName() == "Purple")
-	{
-		Chase(deltaTime);
-	}
-	else if (GetName() == "Cyan")
-	{
-		WanderToCorner(deltaTime);
-	}
-	else if(GetName() == "Orange")
-	{
-		Coward(deltaTime);
-	}
-	else if(GetName() == "Red")
-	{
-		Ambush(deltaTime);
-	}
+	CheckState(deltaTime);
 
-	aie::Input* input = aie::Input::getInstance();
-	if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT))
-		cout << "X: " << input->getMouseX() << ", Y: " << input->getMouseY() << endl;
+	if (_Flee)
+		_State = _FLEE;
+	else
+		ResetGhosts();
+
+	//aie::Input* input = aie::Input::getInstance();
+	//if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT))
+	//	cout << "X: " << input->getMouseX() << ", Y: " << input->getMouseY() << endl;
+}
+
+void Ghost::CheckState(float deltaTime)
+{
+	switch (_State)
+	{
+	case _CHASE:
+		Chase(deltaTime);
+		break;
+	case _RANDOM:
+		Random(deltaTime);
+		break;
+	case _COWARD:
+		Coward(deltaTime);
+		break;
+	case _AMBUSH:
+		Ambush(deltaTime);
+		break;
+	case _FLEE:
+		Flee(deltaTime);
+		break;
+	default:
+		break;
+	}
 }
 
 void Ghost::OnCollision(GameObject* OtherObject)
 {
-
+	if (_Flee && OtherObject->GetName() == "PacMan")
+	{
+		_Flee = false;
+		Respawn();
+		ResetGhosts();
+		SetPosition(_Position);
+	}
 }
 
 Vector2 Ghost::RoundToNode(Vector2 _Pos)
@@ -145,7 +172,7 @@ void Ghost::Respawn()
 	_Grid->FindPath(_StartPos, _EndPos, _Path);
 }
 
-void Ghost::Coward(float deltaTime) // Orange Ghost		Needs to make him chase pacman but once he gets within a radius runs away to where he started
+void Ghost::Coward(float deltaTime) // Get close to pacman then run
 {
 	_Timer += 1;
 	_Position = GetPosition();
@@ -172,7 +199,7 @@ void Ghost::Coward(float deltaTime) // Orange Ghost		Needs to make him chase pac
 	}
 	else
 	{
-			_Grid->FindPath(_StartPos, _EndPos, _Path);
+		_Grid->FindPath(_StartPos, _EndPos, _Path);
 
 		if (_PathCurrentNode == _Path.size() - 1)
 		{
@@ -182,7 +209,7 @@ void Ghost::Coward(float deltaTime) // Orange Ghost		Needs to make him chase pac
 	PathTracing(deltaTime);
 }
 
-void Ghost::Chase(float deltaTime) // Purple Ghost
+void Ghost::Chase(float deltaTime) // EndNode equals pacmans Position
 {
 	_Timer += 1;
 	_Position = GetPosition();
@@ -236,7 +263,7 @@ void Ghost::Ambush(float deltaTime) // Red Ghost (End Point is in front of pac m
 	PathTracing(deltaTime);
 }
 
-void Ghost::WanderToCorner(float deltaTime) // Cyan Ghost (Wanders to each corner)
+void Ghost::Random(float deltaTime) // Cyan Ghost (Wanders to each corner)
 {
 	_Timer += 1;
 	_Position = GetPosition();
@@ -258,6 +285,12 @@ void Ghost::WanderToCorner(float deltaTime) // Cyan Ghost (Wanders to each corne
 		_StartPos = _Position;
 		_Grid->FindPath(_StartPos, _EndPos, _Path);
 	}
+}
+
+void Ghost::Flee(float deltaTime)
+{
+	Random(deltaTime);
+	_Texture = _Scared;
 }
 
 void Ghost::Draw(aie::Renderer2D* renderer)

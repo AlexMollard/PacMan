@@ -17,6 +17,7 @@ PacMan::PacMan(Grid* _Grid)
 	_nextNode = nullptr;
 	_Name = "PacMan";
 	SetName(_Name);
+	_PowerUp = false;
 	_Timer = 0;
 	_NodeSizeF = 50.0f;
 	_NodeSizeI = 50;
@@ -287,8 +288,22 @@ void PacMan::OnCollision(GameObject* OtherObject)
 
 	if ((OtherObject->GetName() == "Red") || (OtherObject->GetName() == "Cyan") || (OtherObject->GetName() == "Orange") || (OtherObject->GetName() == "Purple"))
 	{
-		cout << "You should be dead" << endl;
-		_Lifes -= 1;
+		if (_PowerUp)
+		{
+			_Score += 100;
+		}
+		else
+		{
+			_Lifes -= 1;
+		}
+	}
+
+	if (OtherObject->GetName() == "PlusDot")
+	{
+		if (OtherObject->GetTexture() != nullptr)
+		{
+			_PowerUp = true;
+		}
 	}
 }
 
