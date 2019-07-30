@@ -65,7 +65,7 @@ void PacMan::Update(float deltaTime)
 		Animate();
 	}
 
-	if (_Input->wasKeyPressed(aie::INPUT_KEY_A) || _Input->wasKeyPressed(aie::INPUT_KEY_S) || _Input->wasKeyPressed(aie::INPUT_KEY_D) || _Input->wasKeyPressed(aie::INPUT_KEY_W))
+	if (_Input->isKeyDown(aie::INPUT_KEY_A) || _Input->isKeyDown(aie::INPUT_KEY_S) || _Input->isKeyDown(aie::INPUT_KEY_D) || _Input->isKeyDown(aie::INPUT_KEY_W))
 		SetPath();
 
 	if (_Path.size() > 0 && _PathCurrentNode < _Path.size())
@@ -142,124 +142,144 @@ void PacMan::Respawn()
 void PacMan::SetPath()
 {
 	aie::Input* _Input = aie::Input::getInstance();
+	Vector2 _TempPosition = RoundToNode(_Position, "None");
 
 	//Calculate Rotation
 	float _Rotation = GetLocalRotation();
-	if (_Input->wasKeyPressed(aie::INPUT_KEY_A) && _CanDirection[0])
+	if (_Input->isKeyDown(aie::INPUT_KEY_A) && _CanDirection[0])
 	{
-		_Rotation = 1.5708;
-		
-		_Position = RoundToNode(_Position, "None");
-		_StartPos = _Position;
+		Node* Test = _Grid->GetNodeByPos(_TempPosition + (Vector2(-50,0)));
 
-		_NextPosition = RoundToNode(_Position, "LEFT");
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
+		if (Test->_Blocked == false)
 		{
-			_NextPosition = RoundToNode(_NextPosition, "LEFT");
 
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-			if (temp->GetBlocked())
-				break;
+			_Rotation = 1.5708;
 
-			_nextNode = temp;
+			_Position = RoundToNode(_Position, "None");
+			_StartPos = _Position;
+
+			_NextPosition = RoundToNode(_Position, "LEFT");
+
+			_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+			while (_nextNode->GetBlocked() == false)
+			{
+				_NextPosition = RoundToNode(_NextPosition, "LEFT");
+
+				Node* temp = _Grid->GetNodeByPos(_NextPosition);
+				if (temp->GetBlocked())
+					break;
+
+				_nextNode = temp;
+			}
+
+			_CanDirection[0] = false;
+			_CanDirection[1] = true;
+			_CanDirection[2] = true;
+			_CanDirection[3] = true;
+			_PathCurrentNode = 1;
 		}
-
-		_CanDirection[0] = false;
-		_CanDirection[1] = true;
-		_CanDirection[2] = true;
-		_CanDirection[3] = true;
-		_PathCurrentNode = 1;
 	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_D) && _CanDirection[1]) // RIGHT
+	else if (_Input->isKeyDown(aie::INPUT_KEY_D) && _CanDirection[1]) // RIGHT
 	{
-		_Rotation = 4.71239;
-		
-		_Position = RoundToNode(_Position, "None");
-		_StartPos = _Position;
-
-		_NextPosition = RoundToNode(_Position, "RIGHT");
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
+		Node* Test = _Grid->GetNodeByPos(_TempPosition + (Vector2(50, 0)));
+		if (Test->_Blocked == false)
 		{
-			_NextPosition = RoundToNode(_NextPosition, "RIGHT");
+			_Rotation = 4.71239;
 
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-			if (temp->GetBlocked())
-				break;
+			_Position = RoundToNode(_Position, "None");
+			_StartPos = _Position;
 
-			_nextNode = temp;
+			_NextPosition = RoundToNode(_Position, "RIGHT");
+
+			_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+			while (_nextNode->GetBlocked() == false)
+			{
+				_NextPosition = RoundToNode(_NextPosition, "RIGHT");
+
+				Node* temp = _Grid->GetNodeByPos(_NextPosition);
+				if (temp->GetBlocked())
+					break;
+
+				_nextNode = temp;
+			}
+
+
+			_CanDirection[0] = true;
+			_CanDirection[1] = false;
+			_CanDirection[2] = true;
+			_CanDirection[3] = true;
+			_PathCurrentNode = 1;
 		}
-
-
-		_CanDirection[0] = true;
-		_CanDirection[1] = false;
-		_CanDirection[2] = true;
-		_CanDirection[3] = true;
-		_PathCurrentNode = 1;
 	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_W) && _CanDirection[2])
+	else if (_Input->isKeyDown(aie::INPUT_KEY_W) && _CanDirection[2])
 	{
-		_Rotation = 0;
-	
-		_Position = RoundToNode(_Position, "None");
-		_StartPos = _Position;
+		Node* Test = _Grid->GetNodeByPos(_TempPosition + (Vector2(0, 50)));
 
-		_NextPosition = RoundToNode(_Position, "UP");
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
+		if (Test->_Blocked == false)
 		{
-			_NextPosition = RoundToNode(_NextPosition, "UP");
+			_Rotation = 0;
 
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
+			_Position = RoundToNode(_Position, "None");
+			_StartPos = _Position;
 
-			if (temp->GetBlocked())
-				break;
+			_NextPosition = RoundToNode(_Position, "UP");
 
-			_nextNode = temp;
+			_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+			while (_nextNode->GetBlocked() == false)
+			{
+				_NextPosition = RoundToNode(_NextPosition, "UP");
+
+				Node* temp = _Grid->GetNodeByPos(_NextPosition);
+
+				if (temp->GetBlocked())
+					break;
+
+				_nextNode = temp;
+			}
+
+			_CanDirection[0] = true;
+			_CanDirection[1] = true;
+			_CanDirection[2] = false;
+			_CanDirection[3] = true;
+			_PathCurrentNode = 1;
 		}
-
-		_CanDirection[0] = true;
-		_CanDirection[1] = true;
-		_CanDirection[2] = false;
-		_CanDirection[3] = true;
-		_PathCurrentNode = 1;
 	}
-	else if (_Input->wasKeyPressed(aie::INPUT_KEY_S) && _CanDirection[3])
+	else if (_Input->isKeyDown(aie::INPUT_KEY_S) && _CanDirection[3])
 	{
-		_Rotation = 3.14159;
-		
-		_Position = RoundToNode(_Position, "None");
-		_StartPos = _Position;
+		Node* Test = _Grid->GetNodeByPos(_TempPosition + (Vector2(0, -50)));
 
-		_NextPosition = RoundToNode(_Position, "DOWN");
-
-		_nextNode = _Grid->GetNodeByPos(_NextPosition);
-
-		while (_nextNode->GetBlocked() == false)
+		if (Test->_Blocked == false)
 		{
-			_NextPosition = RoundToNode(_NextPosition, "DOWN");
+			_Rotation = 3.14159;
 
-			Node* temp = _Grid->GetNodeByPos(_NextPosition);
-			if (temp->GetBlocked())
-				break;
+			_Position = RoundToNode(_Position, "None");
+			_StartPos = _Position;
 
-			_nextNode = temp;
+			_NextPosition = RoundToNode(_Position, "DOWN");
+
+			_nextNode = _Grid->GetNodeByPos(_NextPosition);
+
+			while (_nextNode->GetBlocked() == false)
+			{
+				_NextPosition = RoundToNode(_NextPosition, "DOWN");
+
+				Node* temp = _Grid->GetNodeByPos(_NextPosition);
+				if (temp->GetBlocked())
+					break;
+
+				_nextNode = temp;
+			}
+
+			_CanDirection[0] = true;
+			_CanDirection[1] = true;
+			_CanDirection[2] = true;
+			_CanDirection[3] = false;
+			_PathCurrentNode = 1;
 		}
-
-		_CanDirection[0] = true;
-		_CanDirection[1] = true;
-		_CanDirection[2] = true;
-		_CanDirection[3] = false;
-		_PathCurrentNode = 1;
 	}
-
 
 	SetRotation(_Rotation);
 	_EndPos = _nextNode->_Position;
@@ -295,6 +315,12 @@ void PacMan::OnCollision(GameObject* OtherObject)
 		else
 		{
 			_Lifes -= 1;
+			_CanDirection[0] = true;
+			_CanDirection[1] = true;
+			_CanDirection[2] = true;
+			_CanDirection[3] = true;
+			_PathCurrentNode = 0;
+			_nextNode = nullptr;
 		}
 	}
 

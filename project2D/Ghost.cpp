@@ -19,6 +19,7 @@ Ghost::Ghost(Grid* Grid, int ghostnum)
 	_NodeSizeF = 50;
 	_NodeSizeI = 50;
 	_Timer = 0;
+	_Flee = false;
 	srand(time(NULL));
 
 	ResetGhosts();
@@ -33,17 +34,17 @@ void Ghost::ResetGhosts()
 {
 	switch (_GhostNumber)
 	{
-	case 0:
+	case 1:
 		_Texture = _GhostPurple;
 		SetName("Purple");
 		_State = _CHASE;
 		break;
-	case 1:
+	case 2:
 		_Texture = _GhostCyan;
 		SetName("Cyan");
 		_State = _RANDOM;
 		break;
-	case 2:
+	case 0:
 		_Texture = _GhostOrange;
 		SetName("Orange");
 		_State = _COWARD;
@@ -62,10 +63,27 @@ void Ghost::Update(float deltaTime)
 {
 	CheckState(deltaTime);
 
-	if (_Flee)
+	if (_Path.size() == 0)
+	{
+		_PathCurrentNode = 0;
+		_Path.clear();
+	}
+
+	if (_Flee && _State != _FLEE)
+	{
+		_Path.clear();
+		_PathCurrentNode = 0;
+		_StartPos = RoundToNode(_Position);
+		_EndPos = GetRandomNode();
+		_Grid->FindPath(_StartPos, _EndPos, _Path);
 		_State = _FLEE;
-	else
+	}
+	else if (_State == _FLEE && !_Flee)
+	{
+		_PathCurrentNode = 0;
+		_Path.clear();
 		ResetGhosts();
+	}
 
 	//aie::Input* input = aie::Input::getInstance();
 	//if (input->wasMouseButtonPressed(aie::INPUT_MOUSE_BUTTON_LEFT))
@@ -74,6 +92,7 @@ void Ghost::Update(float deltaTime)
 
 void Ghost::CheckState(float deltaTime)
 {
+	std::cout << _State << std::endl;
 	switch (_State)
 	{
 	case _CHASE:
@@ -140,13 +159,13 @@ void Ghost::PathTracing(float deltaTime)
 		SetPosition(_Position);
 
 		float dist = (_Position - _Path[_PathCurrentNode]).magnitude();
-		if (dist < 0.5f)
+		if (dist < 1.5f)
 		{
 			_PathCurrentNode++;
 			_Position = RoundToNode(_Position);
 			_StartPos = _Position;
 
-			if (_Name == "Red" || (_Name == "Orange" ))
+			if ((_Name == "Red" || _Name == "Orange" ) && !_Flee)
 				_PathCurrentNode = 1;
 		}
 	}
@@ -213,7 +232,7 @@ void Ghost::Chase(float deltaTime) // EndNode equals pacmans Position
 {
 	_Timer += 1;
 	_Position = GetPosition();
-
+	std::cout << _PacManPos.x << ", " << _PacManPos.y << std::endl;
 	if (_Timer == 1)
 	{
 		_EndPos = _PacManPos;
@@ -222,13 +241,13 @@ void Ghost::Chase(float deltaTime) // EndNode equals pacmans Position
 	}
 	else if (_Path.size() < 2)
 	{
-		_EndPos = RoundToNode(_PacManPos);
+		_EndPos = _PacManPos;
 		_Grid->FindPath(_StartPos, _EndPos, _Path);
 		_PathCurrentNode = 0;
 	}
 	else if (_PathCurrentNode == _Path.size())
 	{
-		_EndPos = RoundToNode(_PacManPos);
+		_EndPos = _PacManPos;
 		_Grid->FindPath(_StartPos, _EndPos, _Path);
 		_PathCurrentNode = 0;
 	}
@@ -287,7 +306,7 @@ void Ghost::Random(float deltaTime) // Cyan Ghost (Wanders to each corner)
 	}
 }
 
-void Ghost::Flee(float deltaTime)
+void Ghost::Flee(float deltaTime) //Fix me
 {
 	Random(deltaTime);
 	_Texture = _Scared;
@@ -301,7 +320,7 @@ void Ghost::Draw(aie::Renderer2D* renderer)
 
 	//Draw Path
 
-	//if (GetName() == "Orange")
+	//if (GetName() == "Red")
 	//{
 	//	renderer->setRenderColour(1.0f, 1.0f, 0.0f);
 	//

@@ -61,6 +61,7 @@ private:
 	
 	bool _CowardRun;
 	bool _Flee;
+	bool _Temp;
 
 	Vector2 _Direction;
 	Vector2 _Velocity;

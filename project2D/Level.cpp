@@ -38,7 +38,54 @@ Level::Level()
 			 }
 			 else if (map[y][x] == 1)
 			 {
-				 _Wall.push_back(new Wall("./textures/Wall.png", _Grid));
+				 //Choose wall texture
+
+
+				//if (map[y + 1][x] == 1 && map[y - 1][x] == 1 && map[y][x + 1] == 1 && y < 14 && y > 0 && x < 14 && x > 0) // Up, Down, Right
+				//	_Wall.push_back(new Wall("./textures/Walls/UpDownRight.png", _Grid));
+
+				//else if (map[y + 1][x] == 1 && map[y - 1][x] == 1 && map[y][x - 1] == 1 && y < 14 && y > 0 && x < 14 && x > 0) // Up, Down, Left
+				//	_Wall.push_back(new Wall("./textures/Walls/UpDownLeft.png", _Grid));
+
+				//else if (map[y + 1][x] == 1 && map[y - 1][x] != 1 && map[y][x + 1] == 1 && y < 14 && y > 0 && x < 14 && x > 0) // Right, Up
+				//	_Wall.push_back(new Wall("./textures/Walls/UpRight.png", _Grid));
+
+				//else if (map[y + 1][x] == 1 && map[y - 1][x] != 1 && map[y][x - 1] == 1 && y < 14 && y > 0 && x < 14 && x > 0) // Left, Up
+				//	_Wall.push_back(new Wall("./textures/Walls/UpLeft.png", _Grid));
+
+				//else if (map[y+1][x] == 1 && map[y+1][x] != 1 && y < 14 && y > 0)	// Up
+				//	_Wall.push_back(new Wall("./textures/Walls/Up.png", _Grid));
+
+				//else if (map[y + 1][x] != 1 && map[y + 1][x] == 1 && y < 14 && y > 0)	// Down
+				//	_Wall.push_back(new Wall("./textures/Walls/Down.png", _Grid));
+
+				//else if (map[y][x - 1] == 1 && map[y][x + 1] != 1 && x < 14 && x > 0)	// Right
+				//	_Wall.push_back(new Wall("./textures/Walls/Right.png", _Grid));
+
+				//else if (map[y][x - 1] != 1 && map[y][x + 1] == 1 && x < 14 && x > 0)	// Left
+				//	_Wall.push_back(new Wall("./textures/Walls/Left.png", _Grid));
+
+				//else if (map[y][x+1] == 1 && map[y][x - 1] == 1 && x < 14 && x > 0)		// Right, Left
+				//	_Wall.push_back(new Wall("./textures/Walls/RightLeft.png", _Grid));
+
+				//else if (map[y + 1][x] == 1 && map[y - 1][x] == 1 && y < 14 && y > 0)	// Up, Down
+				//	_Wall.push_back(new Wall("./textures/Walls/UpDown.png", _Grid));
+
+				//else
+
+					 _Wall.push_back(new Wall("./textures/Walls/Wall.png", _Grid));		// Normal
+
+
+
+
+
+
+
+
+
+
+
+
 				 _Wall.back()->SetParent(this);
 				 _Wall.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Wall.back()->UpDateGlobalTransform();
@@ -54,7 +101,7 @@ Level::Level()
 			 {
 				 _Ghost.push_back(new Ghost(_Grid, _Ghost.size()));
 				 _Ghost.back()->SetParent(this);
-				 _Ghost.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
+				 _Ghost.back()->SetPosition(Vector2(100 + NodeSize * x, 100 + NodeSize * y)); 
 				 _Ghost.back()->SetSpawn(Vector2(100 + NodeSize * x, 100 + NodeSize * y));
 				 _Ghost.back()->UpDateGlobalTransform();
 				 _collisionManager->AddObject(_Ghost.back());
